@@ -1,0 +1,127 @@
+<div *ngIf="visible">
+  <div class="separator-dashed"></div>
+
+  <div class="dropdown dropdown-search data-dropdown-search">
+    <a mat-mini-fab class="mat-mini-fab-sm shadow-none" color="primary" type="button" id="dropdownSearch"
+      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown()"
+      matTooltip="Click to search">
+      <i class="fas fa-search"></i>
+    </a>
+
+    <a mat-mini-fab class="mat-mini-fab-sm shadow-none ml-2" color="success" type="button" matTooltip="Refresh data"
+      (click)="onRefreshData()">
+      <i class="fas fa-sync-alt"></i>
+    </a>
+
+    <div class="dropdown-menu pl-0 pr-3 pt-3 pb-3 mt-2" aria-labelledby="dropdownSearch"
+      [ngClass]="{show : isToggleDropdown}">
+      <button type="button" class="close mt-n2 mr-n1" aria-label="Close" (click)="toggleDropdown()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+      <form (ngSubmit)="onGetDataPunchType()" *ngIf="isHaveData">
+        <div class="row">
+          <div class="col-12 col-md-12 col-lg-12">
+            <div class="form-group">
+              <label>Type:</label>
+              <input type="text" class="form-control" name="punchTypeFilterCode" [(ngModel)]="punchTypeFilterCode">
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="separator-dashed mt-0"></div>
+          </div>
+
+          <div class="col-12">
+            <button mat-raised-button color="primary" type="submit"><i class="fas fa-search mr-1"></i>
+              Search</button>
+            <button mat-raised-button (click)="onCancelLookup()" type="button" class="ml-2"><i
+                class="fas fa-eraser mr-1"></i> Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="table-options data-table-options">
+    <button mat-raised-button color="primary" class="mr-2" data-toggle="modal" data-backdrop="static"
+      data-keyboard="false" data-target="#createModal" (click)="onOpenCreateModal()">
+      <i class="fas fa-plus mr-1"></i> Add New
+    </button>
+    <a mat-raised-button color="primary" href="../../../../assets/data-template/punchType.csv">
+      <i class="fas fa-download mr-1"></i> Download template
+    </a>
+
+    <button mat-raised-button color="success" class="ml-2" data-toggle="modal" data-backdrop="static"
+      data-keyboard="false" data-target="#importModal" (click)="onOpenImportModal()">
+      <i class="fas fa-cloud-upload-alt mr-1"></i> Import
+    </button>
+
+    <button mat-raised-button color="accent" class="ml-2" (click)="onExportExcel()"
+      *ngIf="dataPunchTypeModels.length > 0">
+      <i class="fas fa-cloud-download-alt mr-1"></i> Export data
+    </button>
+  </div>
+
+  <div class="table-container table-responsive">
+    <table mat-table [dataSource]="dataSource" matSort matSortActive="subsystemNo" matSortDirection="desc"
+      matSortDisableClear (matSortChange)="onSortData($event)" class="table table-striped table-bordered table-hover"
+      *ngIf="dataPunchTypeModels.length > 0">
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+        <td mat-cell *matCellDef="let element">{{element.type}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+        <td mat-cell *matCellDef="let element">{{element.description}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Edit</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <a class="btn-edit" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#editModal"
+            (click)="onOpenEditModal(element.punchTypeId)">
+            <i class="fas fa-pencil-alt"></i>
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Delete</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <a class="btn-delete" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+            data-target="#confirmModal" (click)="onOpenDeleteModal(element.punchTypeId)">
+            <i class="far fa-trash-alt"></i>
+          </a>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[50, 100, 200]" [pageSize]="50"
+      *ngIf="dataPunchTypeModels.length !== 0 && !isFilter"
+      (page)="onGetDataPunchType($event.pageIndex,$event.pageSize,punchTypeSorting)" [length]="punchTypeCount">
+    </mat-paginator>
+
+    <!-- Datatable empty -->
+    <div *ngIf="!clientState.isBusy && dataPunchTypeModels.length === 0"
+      class="p-2 bg-secondary text-white text-center">
+      There are no items to show in this view!
+    </div>
+  </div>
+
+  <div class="overlay {{isToggleDropdown ? 'is-open':''}}" (click)="toggleDropdown()" style="z-index: 10;"></div>
+
+  <edit-data-punchtype *ngIf="isEditState" [updationModel]="updationModel" [visible]="isEditState"
+    (onSuccess)="onSuccessEditModal($event)">
+  </edit-data-punchtype>
+  <create-data-punchtype *ngIf="isCreateState" [visible]="isCreateState" [projectId]="projectId"
+    (onSuccess)="onSuccessCreateModal($event)">
+  </create-data-punchtype>
+  <confirm-modal *ngIf="isDeleteState" [visible]="isDeleteState" (confirm)="onDeleteConfirm($event)"
+    [header]="'Confirm'" [content]="'Are you sure want to delete?'"></confirm-modal>
+
+  <import-data-punchtype *ngIf="isImportState" [visible]="isImportState" (onSuccess)="onSuccessImportModal($event)">
+  </import-data-punchtype>
+</div>

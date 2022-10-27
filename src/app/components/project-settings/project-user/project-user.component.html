@@ -1,0 +1,92 @@
+<div class="box-body">
+    <div class="table-options mb-3">
+        <a matTooltip="You need add role" [matTooltipDisabled]="isAddedMember">
+            <button mat-raised-button color="primary" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                data-target="#addNewModal" (click)="onOpenAddModal()" [disabled]="!isAddedMember">
+                <i class="fas fa-plus mb-1 mr-1"></i>Add member
+            </button>
+        </a>
+    </div>
+
+    <div class="table-container table-responsive">
+        <table mat-table [dataSource]="dataSource" matSort class="table table-striped table-bordered table-hover"
+            *ngIf="projectMemberModels.length !== 0" matSortActive="memberName" matSortDirection="asc" matSortDisableClear (matSortChange)="onSortData($event)">
+            <ng-container matColumnDef="memberName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <td mat-cell *matCellDef="let element">
+                    <ngx-avatar *ngIf="!element.photoUrl" name="{{element.memberName}}" size="30" class="float-left">
+                    </ngx-avatar>
+                    <ngx-avatar *ngIf="element.photoUrl" src="{{element.photoUrl}}" size="30" class="float-left">
+                    </ngx-avatar>
+                    <div class="float-left ml-2 mt-1">
+                        {{element.memberName}}
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+                <td mat-cell *matCellDef="let element">{{element.role}}</td>
+            </ng-container>
+            <ng-container matColumnDef="authorisationLevel">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authorisation Level</th>
+                <td mat-cell *matCellDef="let element">{{element.authorisationLevel}}</td>
+            </ng-container>
+            <ng-container matColumnDef="edit">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Edit</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                    <a class="btn-edit" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                        data-target="#editModal" (click)="onOpenEditModal(element.projectMemberId)">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Delete</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                    <a class="btn-delete" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                        data-target="#confirmModal" (click)="onOpenDeleteModal(element.projectMemberId)">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[50, 100, 200]" [pageSize]="50" *ngIf="projectMemberModels.length !== 0"
+            (page)="onGetProjectUserData($event.pageIndex,$event.pageSize)" [length]="projectMembersCount"></mat-paginator>
+
+        <!-- Datatable empty -->
+        <table class="table table-bordered table-hover" role="grid" *ngIf="projectMemberModels.length === 0">
+            <thead role="rowgroup">
+                <tr class="mat-header-row" role="row">
+                    <th class="mat-header-cell" role="columnheader">Name</th>
+                    <th class="mat-header-cell" role="columnheader">Role</th>
+                    <th class="mat-header-cell" role="columnheader">Authorisation Level</th>
+                    <th class="mat-header-cell text-center" role="columnheader">Edit</th>
+                    <th class="mat-header-cell text-center" role="columnheader">Delete</th>
+                </tr>
+            </thead>
+            <tbody role="rowgroup">
+                <tr class="mat-row" role="row">
+                    <td class="text-center" colspan="4">
+                        There is no item!
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<add-project-user *ngIf="isAddNewState" [visible]="isAddNewState" [projectId]="projectId"
+    (onSuccess)="onSuccessAddModal($event)">
+</add-project-user>
+
+<edit-project-user *ngIf="isEditState" [visible]="isEditState" [projectId]="projectId" (onSuccess)="onSuccessEditModal($event)"
+    [idEditing]="idEditing">
+</edit-project-user>
+
+<confirm-modal *ngIf="isDeleteState" [visible]="isDeleteState" (confirm)="onDeleteConfirm($event)" [header]="'Confirm'"
+    [content]="'Are you sure want to delete?'"></confirm-modal>

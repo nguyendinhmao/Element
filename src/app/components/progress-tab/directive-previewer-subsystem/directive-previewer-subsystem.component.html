@@ -1,0 +1,55 @@
+<div class="content-system" id="contentSystem">
+  <div class="scroll-content" id="scrollContent"
+    [ngClass]="{'handle-scrollbar':!isPdfShow, 'remove-handle-scrollbar': removeHandleScrollbar}">
+    <div class="header" id="header">
+      <div class="block-system">
+        <div></div>
+        <div>SubSystem</div>
+      </div>
+      <div>
+        <div>Punch Items</div>
+        <div>
+          <div class="block-punch">PL A</div>
+          <div class="block-punch">PL B</div>
+          <div class="block-punch">PL C</div>
+        </div>
+      </div>
+      <div>
+        <div>Change</div>
+        <div class="block-change">O/S</div>
+      </div>
+      <div *ngFor="let milestone of data2Drawing.milestones">
+        <div>{{milestone.value}}</div>
+        <div class="block-milestone">
+          <div class="block-itrs">O/S ITRs</div>
+          <div class="block-handover">Handover</div>
+        </div>
+      </div>
+      <div>
+        <div></div>
+        <div class="block-completion">% Completion</div>
+      </div>
+    </div>
+    <div class="main">
+      <div *ngFor="let item of data2Drawing.subSystems">
+        <div class="block-system">{{item.no}}</div>
+        <div class="block-punch">{{item.aPunchItems}}</div>
+        <div class="block-punch">{{item.bPunchItems}}</div>
+        <div class="block-punch">{{item.cPunchItems}}</div>
+        <div class="block-change">{{item.osChanges}}/{{item.totalChanges}}</div>
+        <div *ngFor="let milestone of item.milestones">
+          <div class="block-itrs">{{milestone.osItrs}}/{{milestone.totalItrs}}</div>
+          <!--Should get into a dictionary-->
+          <div class="block-handover">{{milestone.completedDate}}</div>
+        </div>
+        <div class="block-completion progress-completion">
+          <span><strong><small>{{item.completedPercent}}% Completion</small></strong></span>
+          <div class="progress-wrapper">
+            <div [ngStyle]="{'width': ''+item.completedPercent+'%'}" class="bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

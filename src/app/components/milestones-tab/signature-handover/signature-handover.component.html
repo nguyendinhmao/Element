@@ -1,0 +1,88 @@
+<div class="container-fluid  position-relative">
+    <div class="row align-items-center mb-2">
+        <div class="col-12 col-md-6 col-lg-2">
+            <a [routerLink]="[
+        '',
+        'modules',
+        moduleKey,
+        'projects',
+        projectKey,
+        'milestones-tab'
+      ]" mat-raised-button>
+                <i class="fas fa-arrow-left mr-1"></i>Back
+            </a>
+        </div>
+
+        <div
+            class="d-flex col-12 col-md-6 col-lg-5 justify-content-center justify-content-md-start justify-content-lg-end pt-2 pt-lg-0">
+            <app-title class="float-left mr-2" [title]="title || 'itr'"
+                [smallTitle]="getDisplayStatusByStatusLabel(progressStage)"></app-title>
+        </div>
+
+        <div class="d-flex col-12 col-lg-5 justify-content-start justify-content-lg-end pt-2 pt-lg-0"
+            *ngIf="canAction && (progressStage === statusList.NOTSTARTED.label || progressStage === statusList.REJECTED.label) && handoverDetail.signatures && handoverDetail.signatures.length > 0"
+            style="padding-right: 30px">
+            <button mat-raised-button class="mr-2" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                data-target="#saveAndSubmit" (click)="handleShowWarningSaveAndSubmit()">
+                <i class="fas fa-signature mr-1"></i>Sign and Submit
+            </button>
+            <button mat-raised-button color="primary" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                data-target="#warningSaveRecord" (click)="handleShowWarningSave()">
+                <i class="far fa-save mr-1"></i>Save
+            </button>
+            <button mat-raised-button color="warn" class="ml-2" data-toggle="modal" data-backdrop="static"
+                data-keyboard="false" data-target="#warningResetModal" (click)="handleShowWarningResetModal()">
+                <i class="fas fa-redo mr-1"></i>Reset
+            </button>
+        </div>
+        <div class="d-flex col-12 col-lg-5 justify-content-start justify-content-lg-end pt-2 pt-lg-0"
+            *ngIf="canAction && progressStage === statusList.INPROGRESS.label && handoverDetail.signatures && handoverDetail.signatures.length > 0"
+            style="padding-right: 30px">
+            <button mat-raised-button color="primary" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                data-target="#approve" (click)="handleShowWarningApprove()">
+                <i class="fas fa-check mr-1"></i>Approve
+            </button>
+            <button mat-raised-button color="warn" class="ml-2" data-toggle="modal" data-backdrop="static"
+                data-keyboard="false" data-target="#reject" (click)="handleShowWarningReject()">
+                <i class="fas fa-ban mr-1"></i>Reject
+            </button>
+        </div>
+    </div>
+    <div class="row no-gutters p-2" style="background-color: white">
+        <div class="col-12" [ngClass]="{ 'disabled-element': !canEvaluation }" id="container-record-view"
+            [innerHTML]="itrTemplateCode"></div>
+    </div>
+
+</div>
+<!-- Confirm modal -->
+<confirm-modal [id]="'warningResetModal'" *ngIf="hasShowWarningReset" [visible]="hasShowWarningReset"
+    (confirm)="handleResetData($event)" header="Warning reset!" content="You will lose data if continue. Continue?">
+</confirm-modal>
+
+<confirm-modal [id]="'warningSaveRecord'" *ngIf="hasShowWarningSave" [visible]="hasShowWarningSave"
+    (confirm)="handleSaveRecord($event)" header="Save record" content="You will save record to database. Continue?">
+</confirm-modal>
+
+<handover-confirm-modal [id]="'saveAndSubmit'" *ngIf="hasShowWarningSaveAndSubmit"
+    [visible]="hasShowWarningSaveAndSubmit" (confirm)="handleSaveAndSubmitRecord($event)" header="Save and submit"
+    content=" Do you want to save and submit this record?">
+</handover-confirm-modal>
+
+<handover-confirm-modal [id]="'approve'" *ngIf="hasShowWarningApprove" [visible]="hasShowWarningApprove"
+    (confirm)="handleApproveRecord($event)" header="Approve" content=" Do you want to approve this record?">
+</handover-confirm-modal>
+
+<another-user-sign-handover *ngIf="hasShowLoginModal" [visible]="hasShowLoginModal" [type]="typeLogin"
+    [requestModel]="requestModel" (onSign)="onLoginModalRes($event)"></another-user-sign-handover>
+
+<confirm-pin-code-modal *ngIf="hasShowPinCodeSubmitModal" [visible]="hasShowPinCodeSubmitModal"
+    [isShowPinCode]="hasShowPinCodeSubmitModal" [isShowCreatePinCode]="!isUserCreatedPinCode"
+    (onSuccess)="onSaveAndSubmitAction($event)"></confirm-pin-code-modal>
+
+<confirm-pin-code-modal *ngIf="hasShowPinCodeApproveModal" [visible]="hasShowPinCodeApproveModal"
+    [isShowPinCode]="hasShowPinCodeApproveModal" [isShowCreatePinCode]="!isUserCreatedPinCode"
+    (onSuccess)="onApproveAction($event)"></confirm-pin-code-modal>
+
+<confirm-reason-modal [id]="'reject'" *ngIf="hasShowWarningReject" [visible]="hasShowWarningReject"
+    (reason)="onRejectAction($event)" [header]="'Confirm'" [content]="'Are you sure want to reject?'">
+</confirm-reason-modal>

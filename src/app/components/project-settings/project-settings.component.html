@@ -1,0 +1,181 @@
+<div class="container-fluid">
+    <div class="row align-items-center no-gutters" style="height:36px;">
+        <div class="col-12 col-md-4 col-lg-4">
+            <a *ngIf="isAdmin" mat-raised-button [routerLink]="['', 'modules', moduleKey, 'project-management']">
+                <i class="fas fa-arrow-left mr-1"></i>Back to Projects
+            </a>
+        </div>
+        <div class="col-12 col-md-4 col-lg-4 text-center">
+            <h2 class="page-header-title" [style.color]="companyColorModel.colorTextColour1">
+                Project Settings <i class="fas fa-angle-right ml-2 mr-2"></i> {{projectSettingsModel.projectName}}
+            </h2>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <mat-accordion>
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Logo - Milestone - Level
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="row">
+                        <div class="col-md-4 col-lg-4 text-center border-right">
+                            <form (ngSubmit)="onSaveProjectLogo(f)" #f="ngForm" novalidate>
+                                <div class="project-logo">
+                                    <h4 class="mb-3 text-left">Project Logo</h4>
+                                    <div class="project-logo-holder">
+                                        <img src="{{projectLogoUrl == null ? '../../../assets/img/default-avatar.jpg' : projectLogoUrl}}"
+                                            alt="Project Logo" class="img-fluid">
+                                    </div>
+                                    <label class="project-logo-upload">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg"
+                                            (change)="onUploadProjectLogo($event)">
+                                    </label>
+                                    <span class="project-logo-cancel" [ngClass]="{show : isProjectLogoExist}"
+                                        (click)="onCancelProjectLogo()">
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                </div>
+                                <div class="project-logo-submit mt-2">
+                                    <button mat-raised-button color="primary">
+                                        <i class="fas fa-upload mb-1 mr-1"></i> Upload
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- <div class="col-md-4 col-lg-4 border-right">
+                            <project-milestones *ngIf="projectId" [projectId]="projectId" [projectKey]="projectKey">
+                            </project-milestones>
+                        </div> -->
+
+                        
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+
+        <div class="col-12 mt-3">
+            <button mat-raised-button color="info" [matMenuTriggerFor]="menuPageSetup"><i
+                    class="fas fa-wrench mb-1 mr-2"></i>Page set-up</button>
+            <mat-menu #menuPageSetup="matMenu">
+                <a mat-menu-item
+                    [routerLink]="['', 'modules', moduleKey, 'project-settings', projectKey, 'itr-setup']">ITR</a>
+                <a mat-menu-item
+                    [routerLink]="['', 'modules', moduleKey, 'project-settings', projectKey, 'preservation-setup']">Preservation</a>
+                <a mat-menu-item href="#">Tag</a>
+                <a mat-menu-item
+                    [routerLink]="['', 'modules', moduleKey, 'project-settings', projectKey, 'punch-setup']">Punch</a>
+                <a mat-menu-item
+                    [routerLink]="['', 'modules', moduleKey, 'project-settings', projectKey, 'change-setup']">Change</a>
+                <a mat-menu-item
+                    [routerLink]="['', 'modules', moduleKey, 'project-settings', projectKey, 'milestones-setup']">Milestones</a>
+            </mat-menu>
+        </div>
+
+        <div class="col-md-6 col-lg-6 mt-3">
+            <mat-accordion>
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Role
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <project-role *ngIf="projectId" [projectId]="projectId" (isAddedMember)="checkAddedMember($event)">
+                    </project-role>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+
+        <div class="col-md-6 col-lg-6 mt-3">
+            <mat-accordion>
+                <mat-expansion-panel [expanded]="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Members
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <project-user *ngIf="projectId" [projectId]="projectId" [isAddedMember]="isAddedMember">
+                    </project-user>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+
+        <!-- <div class="col-md-6 col-lg-6 mt-3">
+            <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            System
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <project-system *ngIf="projectKey" [projectKey]="projectKey"></project-system>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div> -->
+    </div>
+</div>
+
+<!-- <div class="container-fluid mt-3">
+    <div class="col-12 box has-shadow pt-4 pb-4">
+        <div class="row">
+            <div class="col-md-4 col-lg-4 text-center border-right">
+                <form (ngSubmit)="onSaveProjectLogo(f)" #f="ngForm" novalidate>
+                    <div class="project-logo">
+                        <h4 class="mb-3 text-left">Project Logo</h4>
+                        <div class="project-logo-holder">
+                            <img src="{{projectLogoUrl == null ? '../../../assets/img/default-avatar.jpg' : projectLogoUrl}}"
+                                alt="Project Logo" class="img-fluid">
+                        </div>
+                        <label class="project-logo-upload">
+                            <i class="fas fa-pencil-alt"></i>
+                            <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg"
+                                (change)="onUploadProjectLogo($event)">
+                        </label>
+                        <span class="project-logo-cancel" [ngClass]="{show : isProjectLogoExist}"
+                            (click)="onCancelProjectLogo()">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </div>
+                    <div class="project-logo-submit mt-2">
+                        <button mat-raised-button color="primary">
+                            <i class="fas fa-upload mb-1 mr-1"></i> Upload
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-4 col-lg-4 border-right">
+                <project-milestones *ngIf="projectId" [projectId]="projectId" [projectKey]="projectKey">
+                </project-milestones>
+            </div>
+
+            <div class="col-md-4 col-lg-4">
+                <project-levels *ngIf="projectId" [projectId]="projectId"></project-levels>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- <div class="container-fluid mt-3">
+    <div class="row flex-row">
+        <div class="col-6">
+            <div class="box has-shadow">
+                <project-user *ngIf="projectId" [projectId]="projectId"></project-user>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="box has-shadow">
+                <project-system *ngIf="projectKey" [projectKey]="projectKey"></project-system>
+            </div>
+        </div>
+    </div>
+</div> -->

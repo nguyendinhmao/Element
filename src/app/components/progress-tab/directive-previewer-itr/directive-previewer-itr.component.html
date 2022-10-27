@@ -1,0 +1,44 @@
+<div class="content-itr" id="contentItr">
+  <div class="scroll-content bg-color-section" id="scrollContent"
+    [ngClass]="{'handle-scrollbar':!isPdfShow, 'remove-handle-scrollbar': removeHandleScrollbar}">
+    <div class="section" *ngFor="let section of data2Drawing">
+      <div class="header" id="header">
+        <div>
+          <div class="font-weight-bold">System</div>
+          <div>{{section.systemNo}}</div>
+          <div class="font-weight-bold">System Description</div>
+          <div>{{section.systemDescription}}</div>
+        </div>
+        <div *ngIf="!!section.subSystemId">
+          <div class="font-weight-bold">Subsystem</div>
+          <div>{{section.subSystemNo}}</div>
+          <div class="font-weight-bold">Subsystem Description</div>
+          <div>{{section.subSystemDescription}}</div>
+        </div>
+      </div>
+      <div class="main">
+        <div class="title">
+          <div>Tag No</div>
+          <div>Tag Description</div>
+          <div>ITR No.</div>
+          <div>ITR Description</div>
+          <div>Completed By</div>
+          <div>Date</div>
+          <div>Approved By</div>
+          <div>Date</div>
+        </div>
+        <div class="content" *ngFor="let item of getList(section)">
+          <div>{{item.tagNo}}</div>
+          <div>{{item.tagDescription}}</div>
+          <div>{{item.itrNo}}</div>
+          <div>{{item.itrDescription}}</div>
+          <div>{{item.completedBy}}</div>
+          <div>{{item.completeDate}}</div>
+          <div>{{item.approvedBy}}</div>
+          <div>{{item.approvedDate}}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,271 @@
+<div class="tag-side-menu container mt-2 mb-3">
+  <div class="tagNo">
+    <div class="row">
+      <div class="col-9">
+        <h5>Tag No.</h5>
+        <span *ngIf="!isEditTagNo">{{ tagNoDetail }}</span>
+        <input type="text" class="form-control" *ngIf="isEditTagNo" name="tagNo" #tagNo="ngModel"
+          [(ngModel)]="tagNoDetail" />
+        <h5 class="mt-3">Description</h5>
+        <p class="mb-0" *ngIf="!isEditTagNo">
+          {{ tagDescriptionDetail }}
+        </p>
+        <textarea name="txtDescription" id="txtDescription" #tagDescription="ngModel" [(ngModel)]="tagDescriptionDetail"
+          rows="5" class="form-control" *ngIf="isEditTagNo"></textarea>
+      </div>
+      <div class="col-3 align-self-end">
+        <button mat-mini-fab color="primary" (click)="onEditTagNo()" *ngIf="isNotEdit()">
+          <i class="fas fa-pencil-alt"></i>
+        </button>
+
+        <button mat-mini-fab color="success" *ngIf="isEditTagNo" data-toggle="modal" data-backdrop="static"
+          data-keyboard="false" data-target="#confirmModal" (click)="onOpenTagNoModal()">
+          <i class="fas fa-save"></i>
+        </button>
+
+        <button mat-mini-fab color="warn" class="mt-2" (click)="onResetTagNo()" *ngIf="isEditTagNo">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <div id="tagSideChartShow" class="tag-donut-chart" *ngIf="!isShowITRBuilder && chartDataSets">
+    <div class="d-block">
+      <div class="text-center mb-2" *ngIf="showComplete">{{ percentageNumber }}% Complete</div>
+      <div class="text-center mb-2 text-danger" *ngIf="!showComplete">No data of chart</div>
+      <mat-progress-bar mode="determinate" [value]="percentageNumber"></mat-progress-bar>
+    </div>
+  </div>
+
+  <div class="allocated-itrs mt-3">
+    <div class="allocated-itrs__title p-2">
+      <div class="row no-gutters align-items-center">
+        <div class="col-9">
+          <h5 class="mb-0 text-uppercase">Allocated ITRs</h5>
+        </div>
+        <div class="col-3 text-right" *ngIf="!isShowITRBuilder">
+          <button *ngIf="isNotEditItr()" mat-mini-fab color="primary" data-toggle="modal" data-backdrop="static"
+            data-keyboard="false" data-target="#editAllocatedItrModal" (click)="onOpenEditAllocatedItrModal()">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-2">
+      <ul *ngIf="tagItrModel.length > 0">
+        <li *ngFor="let item of tagItrModel" class="mt-1 text-none-decoration">
+          <div class="row no-gutters align-items-center">
+            <div class="col-5">
+              <a [routerLink]="['','modules',moduleKey,'projects',projectKey,'tag-tab',item.tagItrId]"
+                class="d-block text-truncate" matTooltip={{item.itrNo}}>{{ item.itrNo }}</a>
+            </div>
+            <div class="col-3 text-center">
+              <span *ngIf="item.isAdded" class="small">(Update)</span>
+            </div>
+            <div class="col-4 text-center badge p-2 d-block" [ngClass]="StatusColor[item.status]">
+              <a class="text-white"
+                [routerLink]="['','modules',moduleKey,'projects',projectKey,'tag-tab',item.tagItrId]">{{StatusDisplay[item.status]}}</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="drawings mt-3">
+    <div class="drawings__title p-2">
+      <h5 class="mb-0 text-uppercase">Drawings</h5>
+    </div>
+
+    <div class="mt-1">
+      <div *ngIf="!isDrawingLoaded" id="progressBarDrawing">
+        <div class="text-center"><small>Loading</small></div>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+      <div *ngIf="isDrawingLoaded && (!drawings || (drawings && drawings.length < 1))"
+        class="row justify-content-center">
+        <small>Not found any drawings</small>
+      </div>
+      <ul *ngIf="isDrawingLoaded && (drawings && drawings.length > 0)">
+        <li *ngFor="let drawing of drawings; index as i" class="mt-1 text-none-decoration"
+          [ngClass]="drawing.url ? 'enable-a' : 'disable-a'">
+          <div class="row no-gutters align-items-center">
+            <div class="col">
+              <a (click)="drawing.url? openPreview(drawing.drawingId):null" class="d-block text-truncate"
+                matTooltip={{drawing.drawingNo}}>
+                {{drawing.drawingNo }}
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <hr *ngIf="!isShowITRBuilder" />
+
+  <div class="punch-status" *ngIf="!isShowITRBuilder">
+    <div class="row mb-3 align-items-center">
+      <div class="col-6">
+        <h5 class="text-primary">
+          <a [routerLink]="['','modules',moduleKey,'projects',projectKey,'punch-tab']"
+            [queryParams]="{ tagNo: tagNoDetail }">Punch Status</a>
+        </h5>
+      </div>
+      <div class="col-6 text-right">
+        <button mat-raised-button color="primary" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+          data-target="#addNewModal" (click)="onOpenAddPunchModal()">
+          <i class="fas fa-plus fa-1x"></i> Punch
+        </button>
+      </div>
+    </div>
+
+    <div class="progress-item">
+      <div class="row no-gutters align-items-center">
+        <div class="col-1">
+          <div class="progress-label">
+            <span>A</span>
+          </div>
+        </div>
+        <div class="col-10">
+          <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar"
+              *ngIf="tabSideMenuModel.noOfPunchTypeACompleted !== null && percentPunchTypeACompleted !== null"
+              [ngStyle]="setProgressBarStyle(percentPunchTypeACompleted)" aria-valuenow="percentPunchTypeACompleted"
+              aria-valuemin="0" aria-valuemax="100">
+              {{ tabSideMenuModel.noOfPunchTypeACompleted }}
+            </div>
+            <div class="progress-bar bg-secondary" role="progressbar"
+              *ngIf="tabSideMenuModel.noOfPunchTypeA !== null && percentPunchTypeA !== null"
+              [ngStyle]="setProgressBarStyle(percentPunchTypeA)" aria-valuenow="percentPunchTypeA" aria-valuemin="0"
+              aria-valuemax="100">
+              {{tabSideMenuModel.noOfPunchTypeA - tabSideMenuModel.noOfPunchTypeACompleted}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-1 text-right" *ngIf="tabSideMenuModel.noOfPunchTypeA !== null">
+          <div class="progress-label">
+            <span>{{ tabSideMenuModel.noOfPunchTypeA }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-item">
+      <div class="row no-gutters align-items-center">
+        <div class="col-1">
+          <div class="progress-label">
+            <span>B</span>
+          </div>
+        </div>
+        <div class="col-10">
+          <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar"
+              *ngIf="tabSideMenuModel.noOfPunchTypeBCompleted !== null && percentPunchTypeBCompleted !== null"
+              [ngStyle]="setProgressBarStyle(percentPunchTypeBCompleted)" aria-valuenow="percentPunchTypeBCompleted"
+              aria-valuemin="0" aria-valuemax="100">
+              {{ tabSideMenuModel.noOfPunchTypeBCompleted }}
+            </div>
+            <div class="progress-bar bg-secondary" role="progressbar"
+              *ngIf="tabSideMenuModel.noOfPunchTypeB !== null && percentPunchTypeB !== null"
+              [ngStyle]="setProgressBarStyle(percentPunchTypeB)" aria-valuenow="percentPunchTypeB" aria-valuemin="0"
+              aria-valuemax="100">
+              {{tabSideMenuModel.noOfPunchTypeB - tabSideMenuModel.noOfPunchTypeBCompleted}}
+            </div>
+          </div>
+        </div>
+        <div class="col-1 text-right" *ngIf="tabSideMenuModel.noOfPunchTypeB !== null">
+          <div class="progress-label">
+            <span>{{ tabSideMenuModel.noOfPunchTypeB }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-item">
+      <div class="row no-gutters align-items-center">
+        <div class="col-1">
+          <div class="progress-label">
+            <span>C</span>
+          </div>
+        </div>
+        <div class="col-10">
+          <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar"
+              *ngIf="tabSideMenuModel.noOfPunchTypeCCompleted !== null && percentPunchTypeCCompleted !== null"
+              [ngStyle]="setProgressBarStyle(percentPunchTypeCCompleted)" aria-valuenow="percentPunchTypeCCompleted"
+              aria-valuemin="0" aria-valuemax="100">
+              {{ tabSideMenuModel.noOfPunchTypeCCompleted }}
+            </div>
+            <div class="progress-bar bg-secondary" role="progressbar"
+              *ngIf="tabSideMenuModel.noOfPunchTypeC !== null && percentPunchTypeC !== null"
+              [ngStyle]="setProgressBarStyle(percentPunchTypeC)" aria-valuenow="percentPunchTypeC" aria-valuemin="0"
+              aria-valuemax="100">
+              {{tabSideMenuModel.noOfPunchTypeC - tabSideMenuModel.noOfPunchTypeCCompleted}}
+            </div>
+          </div>
+        </div>
+        <div class="col-1 text-right" *ngIf="tabSideMenuModel.noOfPunchTypeC !== null">
+          <div class="progress-label">
+            <span>{{ tabSideMenuModel.noOfPunchTypeC }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="change-status mt-4" *ngIf="!isShowITRBuilder">
+    <h5>
+      <a [routerLink]="isTablet?null:['','modules',moduleKey,'projects',projectKey,'change-tab']"
+        [queryParams]="isTablet?null:{ tagNo: tagNoDetail }">Change Status</a>
+    </h5>
+    <div class="progress-item">
+      <div class="row no-gutters">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <div class="progress-label">
+            <span>Active</span>
+            <span class="float-right">Closed</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar bg-danger" role="progressbar"
+              *ngIf="tabSideMenuModel.noOfChangeActive && percentChangeActive"
+              [ngStyle]="setProgressBarStyle(percentChangeActive)" aria-valuenow="percentChangeActive" aria-valuemin="0"
+              aria-valuemax="100">
+              {{tabSideMenuModel.noOfChangeActive - tabSideMenuModel.noOfChangeCompleted}}
+            </div>
+            <div class="progress-bar bg-success" role="progressbar"
+              *ngIf="tabSideMenuModel.noOfChangeCompleted && percentChangeCompleted"
+              [ngStyle]="setProgressBarStyle(percentChangeCompleted)" aria-valuenow="percentChangeCompleted"
+              aria-valuemin="0" aria-valuemax="100">
+              {{ tabSideMenuModel.noOfChangeCompleted }}
+            </div>
+          </div>
+        </div>
+        <div class="col-1 text-right align-self-end"
+          *ngIf="tabSideMenuModel.noOfChangeActive && tabSideMenuModel.noOfChangeCompleted">
+          <div class="progress-label">
+            <span> {{ tabSideMenuModel.noOfChangeActive }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="preservation-status mt-4" *ngIf="!isShowITRBuilder">
+    <h5>
+      <a [routerLink]="['','modules',moduleKey,'projects',projectKey,'preservation-tab', tagNoDetail]"> Preservation
+        Status </a>
+    </h5>
+    <p>
+      Complete: <b>{{ countPreservationByStatus('complete',tabSideMenuModel.noOfPreservationComplete) }}</b><br>
+      Due: <b>{{ countPreservationByStatus('due',tabSideMenuModel.noOfPreservationDue) }}</b><br>
+      Overdue: <b>{{ countPreservationByStatus('overdue',tabSideMenuModel.noOfPreservationOverdue) }}</b>
+    </p>
+  </div>
+</div>

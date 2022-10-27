@@ -1,0 +1,87 @@
+.apply-filter {
+  .box-header {
+    &:hover {
+      cursor: pointer;
+    }
+
+    h2 {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+:host ::ng-deep .mat-radio-container {
+  height: 15px;
+  width: 15px;
+}
+
+:host ::ng-deep .mat-radio-outer-circle {
+  height: 15px;
+  width: 15px;
+}
+
+:host ::ng-deep .mat-radio-inner-circle {
+  height: 15px;
+  width: 15px;
+}
+
+:host ::ng-deep .mat-radio-button .mat-radio-ripple {
+  height: 20px; /*double of your required circle radius*/
+  width: 20px; /*double of your required circle radius*/
+  left: calc(50% - 10px); /*'10px'-same as your required circle radius*/
+  top: calc(50% - 10px); /*'10px'-same as your required circle radius*/
+}
+
+:host ::ng-deep .mat-radio-button .mat-radio-label {
+  margin-bottom: 0;
+}
+
+.generate-space div {
+  padding: 0;
+}
+
+.cover-page {
+  border: 1px black solid;
+  padding: 3px;
+  // margin: 5px;
+}
+
+.paging {
+  text-align: center;
+  margin: 10px 0 20px 0;
+  font-weight: 600;
+  font-style: italic;
+  
+}
+
+.border-bottom-paging {
+  border-bottom: 1px solid #00000024;
+  margin-bottom: 50px;
+}
+@media (min-width: 576px) and (max-width: 720px) {
+  .generate-space div {
+    &:nth-child(odd) {
+      padding-right: 15px;
+    }
+    &:nth-child(even) {
+      padding-left: 15px;
+    }
+  }
+}
+
+@media (min-width: 721px) {
+  .generate-space div {
+    &:nth-child(3n + 1) {
+      padding-right: 10px;
+    }
+    &:nth-child(3n + 2) {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+    &:nth-child(3n + 3) {
+      padding-left: 10px;
+    }
+  }
+}

@@ -1,0 +1,62 @@
+.itr-border-unselected{
+    background: none;
+    color: white;
+}
+
+.itr-border-selected{
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(38, 77, 115, 0.5);
+    background-color: rgba(51, 102, 153, 1);
+    margin: -1px 0;
+}
+
+.itr-row-contain-border{
+    width: 100%;
+    padding: 0 15px;
+    margin: 2px 0;
+};
+
+.itr-border-btn-wrap {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    .itr-border-icon-wrap{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .itr-border-icon{
+        cursor: pointer;
+        width: 25px;
+        background: white;
+        padding: 1px;
+        margin: 4px;
+
+        &:focus{
+            outline: none;
+        }
+    }
+
+    .itr-border-label{
+        cursor: pointer;
+        margin: 0;
+    }
+
+    &:hover{
+        background-color: rgba(17, 22, 43, 0.48);
+
+        .itr-border-icon{
+            border: 1px solid black;
+            background: rgb(226, 225, 225);
+        }
+
+        .itr-border-label{
+            font-weight: bold;
+        }
+    }
+}

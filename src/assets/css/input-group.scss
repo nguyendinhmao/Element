@@ -1,0 +1,308 @@
+.input-group {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    width: 100%;
+
+    > {
+
+        .form-control,
+        .form-control-plaintext,
+        .custom-select,
+        .custom-file {
+            position: relative;
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            width: 1%;
+            margin-bottom: 0;
+        }
+
+        .form-control+ {
+
+            .form-control,
+            .custom-select,
+            .custom-file {
+                margin-left: -1px;
+            }
+        }
+
+        .form-control-plaintext+ {
+
+            .form-control,
+            .custom-select,
+            .custom-file {
+                margin-left: -1px;
+            }
+        }
+
+        .custom-select+ {
+
+            .form-control,
+            .custom-select,
+            .custom-file {
+                margin-left: -1px;
+            }
+        }
+
+        .custom-file+ {
+
+            .form-control,
+            .custom-select,
+            .custom-file {
+                margin-left: -1px;
+            }
+        }
+
+        .form-control:focus,
+        .custom-select:focus {
+            z-index: 3;
+        }
+
+        .custom-file .custom-file-input:focus {
+            ~.custom-file-label {
+                z-index: 3;
+            }
+
+            z-index: 4;
+        }
+
+        .form-control:not(:last-child),
+        .custom-select:not(:last-child) {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .form-control:not(:first-child),
+        .custom-select:not(:first-child) {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .custom-file {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+
+            &:not(:last-child) .custom-file-label {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+
+                &::after {
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
+                }
+            }
+
+            &:not(:first-child) .custom-file-label {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+    }
+}
+
+.input-group-prepend,
+.input-group-append {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.input-group-prepend .btn,
+.input-group-append .btn {
+    position: relative;
+    z-index: 2;
+}
+
+.input-group-prepend .btn:focus,
+.input-group-append .btn:focus {
+    z-index: 3;
+}
+
+.input-group-prepend {
+    .btn+ {
+
+        .btn,
+        .input-group-text {
+            margin-left: -1px;
+        }
+    }
+
+    .input-group-text+ {
+
+        .input-group-text,
+        .btn {
+            margin-left: -1px;
+        }
+    }
+}
+
+.input-group-append {
+    .btn+ {
+
+        .btn,
+        .input-group-text {
+            margin-left: -1px;
+        }
+    }
+
+    .input-group-text+ {
+
+        .input-group-text,
+        .btn {
+            margin-left: -1px;
+        }
+    }
+}
+
+.input-group-prepend {
+    margin-right: -1px;
+}
+
+.input-group-append {
+    margin-left: -1px;
+}
+
+.input-group-text {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: .375rem .75rem;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #74788d;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #f7f8fa;
+    border: 1px solid #e2e5ec;
+    border-radius: 4px;
+    // height: calc(1.5em + .75rem + 2px);
+
+    input {
+
+        &[type="radio"],
+        &[type="checkbox"] {
+            margin-top: 0;
+        }
+    }
+}
+
+.input-group-lg> {
+
+    .form-control:not(textarea),
+    .custom-select {
+        height: calc(1.5em + 2.3rem + 2px);
+    }
+
+    .form-control,
+    .custom-select,
+    .input-group-prepend>.input-group-text,
+    .input-group-append>.input-group-text,
+    .input-group-prepend>.btn,
+    .input-group-append>.btn {
+        padding: 1.15rem 1.65rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+        border-radius: 0.3rem;
+    }
+}
+
+.input-group-sm> {
+
+    .form-control:not(textarea),
+    .custom-select {
+        height: calc(1.5em + 1rem + 2px);
+    }
+
+    .form-control,
+    .custom-select,
+    .input-group-prepend>.input-group-text,
+    .input-group-append>.input-group-text,
+    .input-group-prepend>.btn,
+    .input-group-append>.btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        border-radius: 0.2rem;
+    }
+}
+
+.input-group-lg>.custom-select,
+.input-group-sm>.custom-select {
+    padding-right: 2rem;
+}
+
+.input-group> {
+    .input-group-prepend> {
+
+        .btn,
+        .input-group-text {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+
+    .input-group-append {
+        &:not(:last-child)> {
+
+            .btn,
+            .input-group-text {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+        }
+
+        &:last-child> {
+
+            .btn:not(:last-child):not(.dropdown-toggle),
+            .input-group-text:not(:last-child) {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+        }
+
+        > {
+
+            .btn,
+            .input-group-text {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+    }
+
+    .input-group-prepend {
+        &:not(:first-child)> {
+
+            .btn,
+            .input-group-text {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+
+        &:first-child> {
+
+            .btn:not(:first-child),
+            .input-group-text:not(:first-child) {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+    }
+}

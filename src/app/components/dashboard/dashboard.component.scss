@@ -1,0 +1,126 @@
+.scrollable {
+  height: 100% !important;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.projects-list {
+  button {
+    &.toggle-nav {
+      margin-left: 170px;
+    }
+  }
+}
+
+gridster.fixed{
+  overflow-x: hidden !important;
+}
+
+.drag-handler {
+  border-top: 3px solid #3071b8;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+  padding: 8px 10px;
+  position: relative;
+  width: 100%;
+  cursor: move;
+
+  h3 {
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #172b4d;
+  }
+
+  .fa-arrows-alt {
+    color: #172b4d;
+  }
+
+  .widget-options {
+    z-index: 999;
+
+    .btn-widget {
+      border-color: transparent;
+      background: transparent;
+      color: #172b4d;
+      border-radius: 4px !important;
+
+      &:hover {
+        color: #3d94fb;
+        background: #f0f3ff;
+      }
+
+      &:focus {
+        color: #3d94fb;
+        background: #f0f3ff;
+        box-shadow: none;
+      }
+    }
+
+    .dropdown-menu {
+      padding: 0;
+      box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
+      border: 0;
+      min-width: 7rem;
+
+      ul {
+        display: block;
+        padding: 0.5rem 0;
+        margin: 0;
+        list-style: none;
+        border: 0;
+
+        li {
+          &.widget-item {
+            display: block;
+
+            a {
+              display: flex;
+              align-items: center;
+              padding: 0.4rem 1rem;
+              cursor: pointer;
+              transition: all 0.3s;
+
+              i {
+                font-size: 0.85rem;
+                color: #a2a5b9;
+              }
+
+              span {
+                font-size: 0.85rem;
+                color: #595d6e;
+                font-weight: 400;
+              }
+            }
+
+            &:hover {
+              a {
+                background-color: #f7f8fa;
+                transition: all 0.3s;
+                text-decoration: none;
+
+                i {
+                  color: #dc3545;
+                }
+
+                span {
+                  color: #dc3545;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.mat-selection-list {
+  .mat-primary {
+    .mat-list-item-content {
+      .mat-pseudo-checkbox-checked {
+        background: #3071b8 !important;
+      }
+    }
+  }
+}

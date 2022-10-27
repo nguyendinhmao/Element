@@ -1,0 +1,108 @@
+<div class="container-fluid">
+  <div class="row">
+    <app-title class="col-12 d-flex" [title]="'Data'"></app-title>
+
+    <div class="col-12 mt-3">
+      <div class="box has-shadow">
+        <div class="box-body">
+          <form (ngSubmit)="onGetData(f)" #f="ngForm" novalidate>
+            <div class="form-group row mb-0">
+              <div class="col-md-3 col-lg-3">
+                <ng-select name="dataTab" [items]="dataTabModels" bindValue="dataTabId" bindLabel="dataTabName"
+                  placeholder="Select table" [(ngModel)]="dataTabModel.dataTabId" #dataTab="ngModel" required>
+                </ng-select>
+                <div *ngIf="dataTab && dataTab.invalid && (dataTab.dirty || dataTab.touched || f.submitted)"
+                  class="error">
+                  <div *ngIf="dataTab.errors?.required">
+                    This field is required
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3">
+                <button mat-raised-button color="primary"><i class="fas fa-eye mr-1"></i>Show
+                  Data</button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Data Discipline -->
+          <data-discipline *ngIf="isDataDiscipline" [visible]="isDataDiscipline" [projectId]="projectId">
+          </data-discipline>
+
+          <!-- Data Equipment -->
+          <data-equipment *ngIf="isDataEquipment" [visible]="isDataEquipment" [projectKey]="projectKey"
+            [projectId]="projectId"></data-equipment>
+
+          <!-- Data Handover -->
+          <!-- <data-handover *ngIf="isHandover" [visible]="isHandover"></data-handover> -->
+
+          <!-- Data Jobcard -->
+          <data-jobcard *ngIf="isJobCard" [visible]="isJobCard" [projectId]="projectId"></data-jobcard>
+
+          <!-- Data Location -->
+          <data-location *ngIf="isDataLocation" [visible]="isDataLocation" [projectKey]="projectKey"
+            [projectId]="projectId"></data-location>
+
+          <!-- Data Milestone -->
+          <data-milestone *ngIf="isMilestone" [visible]="isMilestone" [projectKey]="projectKey" [projectId]="projectId">
+          </data-milestone>
+
+          <!-- Data Subsystem -->
+          <data-subsystem *ngIf="isDataSubSystem" [visible]="isDataSubSystem"></data-subsystem>
+
+          <!-- Data System -->
+          <data-system *ngIf="isDataTabSystem" [visible]="isDataTabSystem" [projectKey]="projectKey"
+            [projectId]="projectId"></data-system>
+
+          <!-- Data TagNo -->
+          <data-tagno *ngIf="isTagNo" [visible]="isTagNo" [projectId]="projectId"></data-tagno>
+
+          <!-- Data Workpack -->
+          <data-workpack *ngIf="isDataWorkPack" [visible]="isDataWorkPack" [projectId]="projectId"></data-workpack>
+
+          <!-- Data Punch List -->
+          <data-punchlist *ngIf="isPunchList" [visible]="isPunchList"></data-punchlist>
+
+          <!-- Data Punch -->
+          <data-punch *ngIf="isPunchItem" [visible]="isPunchItem" [projectKey]="projectKey" [projectId]="projectId">
+          </data-punch>
+
+          <!-- Data Drawing Type -->
+          <data-drawingtype *ngIf="isDrawingType" [visible]="isDrawingType" [projectKey]="projectKey"
+            [projectId]="projectId"></data-drawingtype>
+
+          <!-- Data Drawing -->
+          <data-drawing *ngIf="isDrawing" [visible]="isDrawing" [projectKey]="projectKey" [projectId]="projectId">
+          </data-drawing>
+
+          <!-- Data Material -->
+          <data-material *ngIf="isMaterial" [visible]="isMaterial" [projectKey]="projectKey" [projectId]="projectId">
+          </data-material>
+
+          <!-- Data Order -->
+          <data-order *ngIf="isOrder" [visible]="isOrder" [projectId]="projectId"></data-order>
+
+          <!-- Data Change Type -->
+          <data-change-type *ngIf="isChangeType" [visible]="isChangeType" [projectId]="projectId"></data-change-type>
+
+          <!-- Data Punch Type -->
+          <data-punchtype *ngIf="isPunchType" [visible]="isPunchType" [projectId]="projectId"></data-punchtype>
+
+          <!-- Data Standard Punch Item -->
+          <data-standardpunchitem *ngIf="isStandardPuch" [visible]="isStandardPuch" [projectId]="projectId">
+          </data-standardpunchitem>
+
+          <!-- Data Preservation Element -->
+          <data-preservationelement *ngIf="isPreservationElement" [visible]="isPreservationElement"
+            [projectKey]="projectKey" [projectId]="projectId"></data-preservationelement>
+
+          <data-record *ngIf="isRecord" [visible]="isRecord" [projectKey]="projectKey" [projectId]="projectId">
+          </data-record>
+
+          <div *ngIf="isProcessing" class="p-3 mt-3 bg-primary text-white text-center">This function is in
+            processing and will be available soon!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

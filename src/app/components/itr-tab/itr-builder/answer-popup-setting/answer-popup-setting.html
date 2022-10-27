@@ -1,0 +1,158 @@
+<div class="container-modal-answer-popup-setting">
+  <div class="modal show d-block" id="modal-input-view" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Link Answer to Question</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="onClose()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label>Select Question:</label>
+              <div class="row no-gutters">
+                <div
+                  [ngClass]="{'col-10': oldLinkedQuestionHtmlId, 'col-12': !oldLinkedQuestionHtmlId}"
+                >
+                  <ng-select
+                    name="question select"
+                    [items]="listQuestion"
+                    bindValue="content"
+                    bindLabel="content"
+                    placeholder="Select Question"
+                    [(ngModel)]="questionLinked"
+                    [clearable]="false"
+                    class="ng-select-height-custom"
+                  >
+                  </ng-select>
+                </div>
+                <div class="col-2 text-right" *ngIf="oldLinkedQuestionHtmlId">
+                  <button
+                    class="btn btn-info"
+                    title="Unlink Question"
+                    (click)="onClickUnlinkButton()"
+                  >
+                    Unlink
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Select Type<span class="required"></span></label>
+              <ng-select
+                name="type"
+                [items]="listAnswerType"
+                bindValue="value"
+                bindLabel="value"
+                placeholder="Select Answer Type"
+                [(ngModel)]="answerType"
+                [clearable]="false"
+                class="ng-select-height-custom"
+                (change)="handleChangeAnswerType()"
+              >
+              </ng-select>
+            </div>
+
+            <div *ngIf="answerType&&answerType!='Input cell'">
+              <hr />
+              <h5 class="text-center mb-3">List answers</h5>
+              <div class="row">
+                <div
+                  class="col-12"
+                  *ngFor="let answer of listAnswer;index as i"
+                >
+                  <div class="form-group row no-gutters">
+                    <div class="col pr-2">
+                      <input
+                        (keydown)="handleKeyDown()"
+                        (keyup)="handleKeyUp()"
+                        type="text"
+                        [(ngModel)]="answer.value"
+                        [placeholder]="answerInputPlaceholderFlexible()"
+                        class="form-control"
+                        [ngModelOptions]="{standalone: true}"
+                      />
+                      <div
+                        class="error"
+                        *ngIf="isDuplicateAnswerValue(answer.value)"
+                      >
+                        Duplicate value
+                      </div>
+                    </div>
+                    <div
+                      class="col-1 text-right"
+                      *ngIf="answerType!='Input cell'"
+                    >
+                      <button
+                        class="btn btn-danger"
+                        (click)="onClickDeleteAnswer(i)"
+                        title="Delete this answer"
+                      >
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12" *ngIf="hasShowToggleHiddeLabel()">
+                  <div class="custom-control custom-switch">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="customSwitchToggleLabel"
+                      (click)="handleClickToggleHiddenLabel()"
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="customSwitchToggleLabel"
+                      >Hide Answer's Label</label
+                    >
+                  </div>
+                </div>
+                <div class="col-12 text-right">
+                  <button
+                    class="btn btn-success add-answer-button"
+                    (click)="onClickAddAnswer()"
+                    title="Add answer field"
+                  >
+                    <i class="fas fa-plus mr-1"></i>Add answer
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            [disabled]="!canSaveChanges()"
+            mat-raised-button
+            color="primary"
+            (click)="onClickSaveChanges()"
+            title="Save changes"
+          >
+            Save changes
+          </button>
+          <button
+            mat-raised-button
+            class="ml-2"
+            (click)="onClose()"
+            title="Close modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

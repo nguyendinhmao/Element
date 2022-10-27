@@ -1,0 +1,29 @@
+.no-notification {
+  img {
+    width: 120px;
+    transform: rotate(-25deg);
+  }
+
+  h5 {
+    text-transform: capitalize;
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+}
+
+.custom-close {
+  margin-top: -4px;
+  width: 11px;
+  border: 0;
+  background-color: transparent;
+  color: rgba(115, 115, 115, 0.8);
+  .icon-symbol-close {
+    font-size: 1rem !important;
+    height: 0;
+    width: 0;
+  }
+
+  &:hover {
+    color: red;
+  }
+}

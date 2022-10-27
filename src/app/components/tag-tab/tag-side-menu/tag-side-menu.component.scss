@@ -1,0 +1,142 @@
+.tag-side-menu {
+  .icon-record-status {
+    width: 24px;
+  }
+
+  .tagNo {
+    h5 {
+      font-size: 1rem;
+    }
+
+    span,
+    p {
+      font-size: 0.9rem;
+    }
+  }
+
+  #tagSideChartShow {
+    ::ng-deep .mat-progress-bar {
+      height: 35px !important;
+      border: 1px solid #0c3014;
+    }
+
+    ::ng-deep .mat-progress-bar-buffer {
+      background: #ffe900;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #28a745;
+    }
+  }
+
+  .allocated-itrs {
+    &__title {
+      background-color: #f6f7f8;
+
+      h5 {
+        font-size: 1rem;
+      }
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+
+      li {
+        list-style: none;
+        color: #3071b8;
+
+        a {
+          font-size: 15px;
+        }
+
+        span {
+          font-size: 14px;
+        }
+
+        .badge {
+          a {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+
+  .drawings {
+    &__title {
+      background-color: #f6f7f8;
+
+      h5 {
+        font-size: 1rem;
+      }
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+
+      li {
+        list-style: none;
+        color: #3071b8;
+
+        a {
+          font-size: 15px;
+        }
+      }
+    }
+
+    #progressBarDrawing {
+      ::ng-deep .mat-progress-bar {
+        height: 5px !important;
+        border: none;
+      }
+
+      ::ng-deep .mat-progress-bar-buffer {
+        background: #d1c4e9;
+      }
+
+      ::ng-deep .mat-progress-bar-fill::after {
+        background-color: #673ab7;
+      }
+    }
+
+    .disable-a {
+      a {
+        color: black !important;
+        cursor: none !important;
+      }
+    }
+
+    .enable-a {
+      &:hover {
+        color: #044d9b;
+      }
+    }
+  }
+
+  .punch-status {
+    h5 {
+      font-size: 1rem;
+    }
+  }
+
+  .change-status {
+    h5 {
+      font-size: 1rem;
+    }
+  }
+
+  .preservation-status {
+    h5 {
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+  .text-none-decoration {
+    text-decoration: none !important;
+  }
+}

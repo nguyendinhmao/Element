@@ -1,0 +1,31 @@
+<div class="modal fade" id="addDetailPreservationModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content has-shadow">
+            <div class="modal-header">
+                <h5 class="modal-title">Add preservation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form (ngSubmit)="onAddNew(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Element<span class="required"></span></label>
+                        <ng-select class="ng-select-height-custom" name="preservationid"
+                            [items]="elementCreationModelList" bindValue="id" bindLabel="value"
+                            placeholder="Select New Element" #presId="ngModel" [(ngModel)]="preservationid" appendTo="body"
+                            [virtualScroll]="true" [loading]="loadingSelection.isLoadingDiscipline" required>
+                        </ng-select>
+                        <div *ngIf="presId.invalid && (presId.dirty || presId.touched || f.submitted)" class="error">
+                            <div *ngIf="presId.errors?.required">This field is required</div>
+                          </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button mat-raised-button color="primary" class="mr-2" type="submit">Add</button>
+                    <a mat-raised-button data-dismiss="modal" (click)="onCancel()">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

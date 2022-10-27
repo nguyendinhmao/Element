@@ -1,0 +1,20 @@
+.change-attachments-side {
+    h5 {
+        font-size: 1rem;
+    }
+
+    .form-control-file {
+        right: 0;
+        width: 100%;
+        z-index: 10;
+        border: 0;
+        position: absolute;
+        overflow: hidden;
+        height: 100% !important;
+        opacity: 0;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,28 @@
+.right-sidebar {
+  .mat-sidenav {
+    width: 320px;
+    z-index: 150;
+  }
+}
+
+//--- Tablet
+@media (min-width: 768px) and (max-width: 1024px) {
+  .right-sidebar {
+    .mat-sidenav {
+      position: fixed;
+      top: 50px;
+      z-index: 150;
+    }
+  }
+}
+
+//--- Low Resolution Tablets
+@media (min-width: 481px) and (max-width: 767px) and (orientation: portrait) {
+  .right-sidebar {
+    .mat-sidenav {
+      position: fixed;
+      top: 50px;
+      z-index: 150;
+    }
+  }
+}

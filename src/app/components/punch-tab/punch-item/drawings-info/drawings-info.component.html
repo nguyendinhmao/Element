@@ -1,0 +1,36 @@
+<div class="modal fade" id="addNewModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content has-shadow">
+      <div class="modal-header">
+        <h5 class="modal-title">Drawings</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group" *ngIf="drawingLookUpModel && drawingLookUpModel.length > 0">
+          <li class="list-group-item" *ngFor="let item of drawingLookUpModel; index as i;">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex align-items-center justify-content-start pl-1">
+                <span>{{item.drawingNo}}</span>
+                <a *ngIf="item.url" [href]="item.url" target="_blank" rel="noopener noreferrer" class="d-flex">
+                  <span style="color: black;">&nbsp;-&nbsp;</span>
+                  <span style="max-width: 210px;" class="d-block text-truncate" matTooltip="{{item.fileName}}"
+                    matTooltipPosition="below">{{item.fileName || 'no_file_name'}}</span>
+                </a>
+              </div>
+              <div class="d-flex align-items-center justify-content-end pr-1">
+                <span *ngIf="item.isLocationDrawing" class="badge-success badge p-2">
+                  Location
+                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <a mat-raised-button data-dismiss="modal" (click)="onCancel()">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,291 @@
+<!-- Top header -->
+<header id="top-header" class="d-flex align-items-center w-100" [style.background]="companyColorModel.colorHeader">
+  <div class="project-name">
+    <div class="row no-gutters align-items-center">
+      <div class="col-2">
+        <div class="toggle-nav" (click)="sidenav.toggle()" (click)="onToggleNav()" [ngClass]="{'open':!isToggleNav}">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="col-10 text-center">
+        <span *ngIf="moduleProjectDefaultModel && moduleProjectDefaultModel.projectName"
+          class="text-white ml-n2">{{moduleProjectDefaultModel.projectName}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="navbar-header">
+    <div class="row no-gutters align-items-center">
+      <div class="col-lg-4 d-none d-md-none d-lg-block"></div>
+
+      <div class="col-3 col-md-5 col-lg-4">
+        <div class="logo-elements text-center pl-md-5 pl-lg-0">
+          <a (click)="reloadSite()">
+            <img src="../../../../assets/img/elements-logo.png" alt="Logo Client" class="img-fluid">
+          </a>
+        </div>
+      </div>
+
+      <div class="col-9 col-md-7 col-lg-4">
+        <div class="d-flex align-items-center justify-content-end">
+          <div class="notification-download-status" *ngIf="isTablet">
+            <mat-radio-group>
+              <mat-radio-button [color]="isOffline ? 'warn' : (isDownloading? 'accent' : 'primary')">
+                <span>{{downloadStatusF}}</span>
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div class="logo-client ml-3">
+            <img src="{{companyManagementModel.logoUrl}}" alt="Logo Client" class="img-fluid mr-3">
+          </div>
+
+          <ul class="nav-menu nav-menu-user list-unstyled">
+            <li class="nav-item dropdown">
+              <a class="nav-link p-0" mat-button [matMenuTriggerFor]="menuUserInfo" *ngIf="!isOffline">
+                <span class="employee-name"
+                  *ngIf="userInfo && userInfo.firstName && userInfo.surName">{{userInfo.firstName}}
+                  {{userInfo.surName}}</span>
+              </a>
+
+              <a class="nav-link p-0" *ngIf="isTablet && isOffline">
+                <span class="employee-name"
+                  *ngIf="userInfo && userInfo.firstName && userInfo.surName">{{userInfo.firstName}}
+                  {{userInfo.surName}}</span>
+              </a>
+
+              <mat-menu #menuUserInfo="matMenu" class="menu-user-info">
+                <div class="user-info">
+                  <div class="username align-self-center">
+                    <div class="name" *ngIf="userInfo && userInfo.firstName && userInfo.surName">
+                      {{userInfo.firstName}}
+                      {{userInfo.surName}}
+                    </div>
+                    <div class="email" *ngIf="userInfo && userInfo.userName">{{userInfo.userName}}</div>
+                  </div>
+                </div>
+                <div class="my-profile" *ngIf="!isTablet">
+                  <a class="d-flex" [routerLink]="['', 'personal-information']">
+                    <div class="user-cog align-self-center">
+                      <i class="fas fa-user-cog"></i>
+                    </div>
+                    <div class="align-self-center ml-3 my-profile-title">
+                      <div>My Profile</div>
+                      <div>Account settings and more</div>
+                    </div>
+                  </a>
+                </div>
+                <div class="sign-out">
+                  <button mat-flat-button color="warn" (click)="onLogout()">Sign Out</button>
+                </div>
+              </mat-menu>
+            </li>
+          </ul>
+
+          <div class="notification ml-3" (click)="onToggleNotification()" *ngIf="!isTablet">
+            <span mat-button [matMenuTriggerFor]="menuNotification">
+              <i class="fas fa-bell text-white"></i>
+              <span class="notification-quantity" *ngIf="bellAmount>0">{{bellAmount}}</span>
+            </span>
+
+          </div>
+
+          <mat-menu #menuNotification="matMenu" class="menu-notification mt-2 pt-2 pb-2 pl-3 pr-3">
+            <notifications></notifications>
+          </mat-menu>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<mat-sidenav-container autosize (backdropClick)="closeSideNav()">
+  <!-- Side menu -->
+  <mat-sidenav #sidenav id="matSideNavMenu" [(mode)]="sideNavMode" [(opened)]="sideNavOpened" [fixedInViewport]="true"
+    [fixedTopGap]="50">
+    <app-menu [colorSideBar]="companyColorModel.colorSideBar" [colorHeader]="companyColorModel.colorHeader"
+      [colorTextColour2]="companyColorModel.colorTextColour2" [moduleProjectDefaultModel]="moduleProjectDefaultModel"
+      [authInProjectDto]="authInProjectDto" (onToggleAppNav)="closeSideMenu($event)">
+    </app-menu>
+  </mat-sidenav>
+
+  <!-- Main content -->
+  <mat-sidenav-content id="matSideNavContent">
+    <div id="layoutMainContainer" class="main-container pt-3 pb-3 position-relative" #mainContainer>
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<!-- <div *ngIf="isTablet && !isOffline && isToggleNav"
+  class="btn-download-detail shadow-lg d-flex justify-content-center align-items-center"
+  [matMenuTriggerFor]="downloadDetail" #downloadDetailView="matMenuTrigger">
+  <div *ngIf="!isDownloading">
+    <span style="font-size: 22px;"><i class="fas fa-cloud-download-alt"></i></span>
+  </div>
+
+  <div *ngIf="isDownloading" class="d-flex justify-content-center align-items-center">
+    <div class="numerator-container">
+      <span class="numerator">{{tagDownloadShows.downloaded + downloadDetailShowsLocal.tags.length}}</span>
+      <span class="denominator">{{tagDownloadShows.total + downloadDetailShowsLocal.tags.length}}</span>
+    </div>
+    <mat-spinner id="spinerDownloadStatus" mode="indeterminate" diameter="45"></mat-spinner>
+  </div>
+</div> -->
+
+<div *ngIf="isTablet && !isOffline && isToggleNav"
+  class="btn-download-detail d-flex justify-content-center align-items-center"
+  [ngClass]="{'btn-downloading': isDownloading}" [matMenuTriggerFor]="downloadDetail"
+  #downloadDetailView="matMenuTrigger">
+  <div *ngIf="!isDownloading">
+    <i class="fas fa-cloud-download-alt"></i>
+  </div>
+
+  <div *ngIf="isDownloading" class="d-flex align-items-center">
+    <img src="./../../../../assets/icons/pointed-spin.svg" alt="Pointed spin" class="mr-1" />
+    <span>Downloading...</span>
+  </div>
+
+</div>
+
+<!-- <div class="btn-download-detail-2 shadow-lg d-flex align-items-center">
+  <div class="inner-left">
+    <img src="./../../../../assets/icons/pointed-spin.svg" alt="">
+  </div>
+  <div class="inner-right">
+    <div style="width: 36px; display: flex;">
+      <div class="numerator-container">
+        <span class="numerator">11</span>
+        <span class="denominator">20</span>
+      </div>
+    </div>
+    <span>Tag(s)</span>
+  </div>
+</div> -->
+
+<mat-menu #downloadDetail="matMenu" class="download-detail-menu mt-2 pt-2 pb-2 pl-3 pr-3">
+  <h5 class="pl-2 pr-2 pb-1 download-detail-title"
+    *ngIf="!isLoadDetailData && getDownloadDetailItems(currentTabName).length > 0">
+    Download Details</h5>
+
+  <div *ngIf="!isLoadDetailData && getDownloadDetailItems(currentTabName).length > 0" id="navDownloadDetail"
+    class="nav-download nav-scrollable-vertical">
+
+    <div *ngIf="downloadTabShow.all" class="nav-child" [ngClass]="{'active':downloadTabActive.all}"
+      (click)="changeDownloadTab($event, downloadTabName.all)">
+      <span>
+        <i *ngIf="!isAllDownloading()" class="fas fa-check-circle pr-1"
+          [ngClass]="{'text-secondary': !downloadTabActive.all,'text-success': downloadTabActive.all}"></i>
+        <img *ngIf="isAllDownloading()" class="pr-1"
+          [src]=" downloadTabActive.all ?'./../../../../assets/icons/nav-tab-spin.svg':'./../../../../assets/icons/nav-tab-spin-black.svg'"
+          alt="Pointed spin" />
+      </span> All (<small
+        *ngIf="isAllDownloading()">{{getAllDownloading()}}/</small><small>{{getAllDownloaded()}}</small>)
+    </div>
+
+    <div *ngIf="!isLoadDetailData && downloadDetailShows.tags.length > 0" class="ml-3 nav-child"
+      [ngClass]="{'active':downloadTabActive.tags}" (click)="changeDownloadTab($event, downloadTabName.tags)">
+      <span>
+        <i *ngIf="downloadDetailShowsTemp.tags.length === 0" class="fas fa-check-circle pr-1"
+          [ngClass]="{'text-secondary': !downloadTabActive.tags,'text-success': downloadTabActive.tags}"></i>
+        <img *ngIf="downloadShows.tagsTotal > 0 && downloadShows.tagsDownloaded < downloadShows.tagsTotal" class="pr-1"
+          [src]=" downloadTabActive.tags ?'./../../../../assets/icons/nav-tab-spin.svg':'./../../../../assets/icons/nav-tab-spin-black.svg'"
+          alt="Pointed spin" />
+      </span>
+      Tags (
+      <small *ngIf="downloadShows.tagsTotal > 0 && downloadShows.tagsDownloaded < downloadShows.tagsTotal">
+        {{downloadShows.tagsDownloaded + downloadDetailShowsLocal.tags.length}}/</small>
+      <small>{{downloadDetailShows.tags.length}}</small>
+      )
+    </div>
+
+    <div *ngIf="!isLoadDetailData && downloadDetailShows.milestones.length > 0" class="ml-3 nav-child"
+      [ngClass]="{'active':downloadTabActive.milestones}"
+      (click)="changeDownloadTab($event, downloadTabName.milestones)">
+      <span>
+        <i *ngIf="downloadDetailShowsTemp.milestones.length === 0" class="fas fa-check-circle pr-1"
+          [ngClass]="{'text-secondary': !downloadTabActive.milestones,'text-success': downloadTabActive.milestones}"></i>
+        <img
+          *ngIf="downloadShows.milestoneTotal > 0 && downloadShows.milestonesDownloaded < downloadShows.milestoneTotal"
+          class="pr-1"
+          [src]=" downloadTabActive.milestones ?'./../../../../assets/icons/nav-tab-spin.svg':'./../../../../assets/icons/nav-tab-spin-black.svg'"
+          alt="Pointed spin" />
+      </span>
+      Milestones (
+      <small
+        *ngIf="downloadShows.milestoneTotal > 0 && downloadShows.milestonesDownloaded < downloadShows.milestoneTotal">
+        {{downloadShows.milestonesDownloaded + downloadDetailShowsLocal.milestones.length}}/</small>
+      <small>{{downloadDetailShows.milestones.length}}</small>
+      )
+    </div>
+
+    <div *ngIf="!isLoadDetailData && downloadDetailShows.preservation.length > 0" class="ml-3 nav-child"
+      [ngClass]="{'active':downloadTabActive.preservation}"
+      (click)="changeDownloadTab($event, downloadTabName.preservation)">
+      <span>
+        <i *ngIf="downloadDetailShowsTemp.preservation.length === 0" class="fas fa-check-circle pr-1"
+          [ngClass]="{'text-secondary': !downloadTabActive.preservation,'text-success': downloadTabActive.preservation}"></i>
+        <img
+          *ngIf="downloadShows.preservationTotal > 0 && downloadShows.preservationDownloaded < downloadShows.preservationTotal"
+          class="pr-1"
+          [src]=" downloadTabActive.preservation ?'./../../../../assets/icons/nav-tab-spin.svg':'./../../../../assets/icons/nav-tab-spin-black.svg'"
+          alt="Pointed spin" />
+      </span>
+      Preservation (
+      <small
+        *ngIf="downloadShows.preservationTotal > 0 && downloadShows.preservationDownloaded < downloadShows.preservationTotal">
+        {{downloadShows.preservationDownloaded + downloadDetailShowsLocal.preservation.length}}/</small>
+      <small>{{downloadDetailShows.preservation.length}}</small>
+      )
+    </div>
+
+    <div *ngIf="downloadTabShow.newPunches" class="ml-3 nav-child" [ngClass]="{'active':downloadTabActive.newPunches}"
+      (click)="changeDownloadTab($event, downloadTabName.newPunches)">
+      <span>
+        <i *ngIf="false" class="fas fa-check-circle pr-1"
+          [ngClass]="{'text-secondary': !downloadTabActive.newPunches,'text-success': downloadTabActive.newPunches}"></i>
+        <img *ngIf="true" class="pr-1"
+          [src]=" downloadTabActive.newPunches ?'./../../../../assets/icons/nav-tab-spin.svg':'./../../../../assets/icons/nav-tab-spin-black.svg'"
+          alt="Pointed spin" />
+      </span>
+      New Punches (<small>11/</small><small>20</small>)
+    </div>
+  </div>
+
+  <div class="download-detail-content" (click)="$event.stopPropagation()">
+    <div class="loading-spinner-download" *ngIf="isLoadDetailData">
+      <mat-spinner diameter="60"></mat-spinner>
+    </div>
+
+    <ul class="m-0 p-0 pl-2 pr-2 files-download-list"
+      *ngIf="!isLoadDetailData && getDownloadDetailItems(currentTabName).length > 0">
+      <li *ngFor="let detail of getDownloadDetailItems(currentTabName)">
+        <div class="d-flex mt-2 pb-2 mr-2 justify-content-between">
+          <div class="d-flex align-items-center">
+            <mat-spinner *ngIf="detail.isLoading" mode="indeterminate" diameter="18" color="accent" strokeWidth="10">
+            </mat-spinner>
+
+            <i class="fas" [ngClass]="{'fa-check-circle text-success':detail.isDone,
+                    'fa-times-circle text-danger':detail.isError}"></i>
+
+            <div class="ml-2">
+              <h6 class="mb-0">{{detail.name}}</h6>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <div *ngIf="!isLoadDetailData && getDownloadDetailItems(currentTabName).length < 1"
+      class="text-center no-download-file pl-2 pr-2 pt-3 pb-1">
+      <img src="../../../assets/img/download-empty.svg" alt="Download empty" />
+      <h5 class="mt-3">No downloaded data right now!</h5>
+    </div>
+  </div>
+</mat-menu>
+
+<loading-state></loading-state>

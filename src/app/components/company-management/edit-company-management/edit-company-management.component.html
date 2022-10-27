@@ -1,0 +1,91 @@
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content has-shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Edit Company</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (ngSubmit)="onSaveData(f)" #f="ngForm" novalidate>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="company-logo">
+              <h4 class="mb-3 text-left">Logo:</h4>
+              <div class="company-logo-holder">
+                <img src="{{newLogoImage || companyUpdationModel.fullPathLogoUrl}}" alt="Client Logo" class="img-fluid">
+              </div>
+              <label class="company-logo-upload">
+                <i class="fas fa-pencil-alt"></i>
+                <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg" (change)="onSelectLogo($event)">
+              </label>
+              <span class="company-logo-cancel" [ngClass]="{show : isLogoExist}" (click)="onCancelLogo()">
+                <i class="fas fa-times"></i>
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Name:</label>
+            <input type="text" class="form-control" name="name" #name="ngModel"
+              [(ngModel)]="companyUpdationModel.companyName" required autocomplete="off">
+            <div *ngIf="name.invalid && (name.dirty || name.touched || f.submitted)" class="error">
+              <div *ngIf="name.errors?.required">This field is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Color branding:</label>
+            <div class="radio-list">
+              <label class="radio radio-solid">
+                <input type="radio" name="colorBranding"> Accent 1
+                <span [(colorPicker)]="companyColorModel.colorHeader" [style.background]="companyColorModel.colorHeader"
+                  [cpOKButton]="true" [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButton]="true"
+                  [cpCancelButtonClass]="'btn btn-danger btn-xs mr-2'"
+                  (colorPickerSelect)="onChangeColorBranding($event, 'colorHeader')"></span>
+              </label>
+
+              <label class="radio radio-solid">
+                <input type="radio" name="colorBranding"> Accent 2
+                <span [(colorPicker)]="companyColorModel.colorMainBackground"
+                  [style.background]="companyColorModel.colorMainBackground" [cpOKButton]="true"
+                  [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButton]="true"
+                  [cpCancelButtonClass]="'btn btn-danger btn-xs mr-2'"
+                  (colorPickerSelect)="onChangeColorBranding($event, 'colorMainBackground')"></span>
+              </label>
+
+              <label class="radio radio-solid">
+                <input type="radio" name="colorBranding"> Accent 3
+                <span [(colorPicker)]="companyColorModel.colorSideBar"
+                  [style.background]="companyColorModel.colorSideBar" [cpOKButton]="true"
+                  [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButton]="true"
+                  [cpCancelButtonClass]="'btn btn-danger btn-xs mr-2'"
+                  (colorPickerSelect)="onChangeColorBranding($event, 'colorSideBar')"></span>
+              </label>
+
+              <label class="radio radio-solid">
+                <input type="radio" name="colorBranding"> Accent 4
+                <span [(colorPicker)]="companyColorModel.colorTextColour1"
+                  [style.background]="companyColorModel.colorTextColour1" [cpOKButton]="true"
+                  [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButton]="true"
+                  [cpCancelButtonClass]="'btn btn-danger btn-xs mr-2'"
+                  (colorPickerSelect)="onChangeColorBranding($event, 'colorTextColour1')"></span>
+              </label>
+
+              <label class="radio radio-solid">
+                <input type="radio" name="colorBranding"> Accent 5
+                <span [(colorPicker)]="companyColorModel.colorTextColour2"
+                  [style.background]="companyColorModel.colorTextColour2" [cpOKButton]="true"
+                  [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpCancelButton]="true"
+                  [cpCancelButtonClass]="'btn btn-danger btn-xs mr-2'"
+                  (colorPickerSelect)="onChangeColorBranding($event, 'colorTextColour2')"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button mat-raised-button color="primary" class="mr-2">Save</button>
+          <a mat-raised-button data-dismiss="modal" (click)="onCancel()">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

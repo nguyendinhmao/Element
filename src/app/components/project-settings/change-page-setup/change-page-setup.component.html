@@ -1,0 +1,150 @@
+<div class="container-fluid change-setup-container">
+    <div class="row align-items-center no-gutters">
+        <div class="col-12 col-md-4 col-lg-4">
+            <a mat-raised-button [routerLink]="['', 'modules', moduleKey, 'project-settings', projectKey]">
+                <i class="fas fa-arrow-left mr-1"></i>Back
+            </a>
+        </div>
+        <div class="col-12 col-md-4 col-lg-4 text-center">
+            <h2 class="page-header-title">
+                {{projectManagementModel && projectManagementModel.projectName}} <i
+                    class="fas fa-angle-right ml-2 mr-2"></i> Change Set-up
+            </h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mt-3">
+            <div class="box has-shadow">
+                <div class="box-header">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <h2>Stages</h2>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6 text-right">
+                            <button mat-raised-button color="success" (click)="onClickCreateAddStage()">+ Stage</button>
+                            <button mat-raised-button color="primary" class="ml-2" (click)="onClickSaveStage()">
+                                <i class="far fa-save mr-1"></i>Save
+                            </button>
+                            <button mat-raised-button color="info" class="ml-2">
+                                <i class="fas fa-redo mr-1"></i>Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <div cdkDropList class="example-list" (cdkDropListDropped)="dropStage($event)">
+                        <div class="example-box row"
+                            *ngIf="!clientState.isBusy && updateProjectStageModel.projectStages && updateProjectStageModel.projectStages.length == 0"
+                            cdkDrag>
+                            <div class="col-12 text-center text-danger">There is empty data</div>
+                        </div>
+                        <div class="example-box form-group row align-items-center"
+                            *ngFor="let stage of updateProjectStageModel.projectStages; let indexOfChange = index"
+                            cdkDrag>
+                            <ng-container *ngIf="!stage.isDeleted">
+                                <div class="example-handle col-1 text-center" cdkDragHandle>
+                                    <i class="fa fa-arrows" aria-hidden="true"></i>
+                                </div>
+                                <div class="col-4">
+                                    <ng-select name="stageAuthorizationName" [items]="authorizationLevelModels"
+                                        bindLabel="value" bindValue="id" class="select-signature"
+                                        placeholder="Authorization level" [(ngModel)]="stage.authorizationId"
+                                        [clearable]="false">
+                                    </ng-select>
+                                </div>
+                                <div class="col-2">
+                                    <ng-select name="stageRoleName" [items]="roleModels" bindLabel="value"
+                                        bindValue="id" class="select-signature" placeholder="Role"
+                                        [(ngModel)]="stage.roleId" [clearable]="false">
+                                    </ng-select>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" placeholder="Description" [(ngModel)]="stage.description"
+                                        class="form-control" />
+                                </div>
+                                <div class="col-1 text-center">
+                                    <button mat-mini-fab color="warn" class="mat-mini-fab-sm"
+                                        (click)="onClickDeleteChangeStage(indexOfChange, stage)">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+
+                                <div *ngIf="hasShowWarningStageValidate && (!stage.authorizationId || !stage.roleId || !stage.description)"
+                                    class="error col-12 text-center">
+                                    Please complete all mandatory fields and re-submit again!
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mt-3">
+            <div class="box has-shadow">
+                <div class="box-header">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <h2>Signatures</h2>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6 text-right">
+                            <button mat-raised-button color="success" (click)="onClickCreateAddSignature()">+
+                                Signature</button>
+                            <button mat-raised-button color="primary" (click)="onClickSaveSignature()" class="ml-2">
+                                <i class="far fa-save mr-1"></i>Save
+                            </button>
+                            <button mat-raised-button color="info" (click)="onResetSignatureData()" class="ml-2">
+                                <i class="fas fa-redo mr-1"></i>Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box-body">
+                    <div cdkDropList class="example-list" (cdkDropListDropped)="dropSignature($event)">
+                        <div class="example-box row"
+                            *ngIf="!clientState.isBusy && updateProjectSignatureModel.projectSignatures && updateProjectSignatureModel.projectSignatures.length == 0"
+                            cdkDrag>
+                            <div class="col-12 text-center text-danger">There is empty data</div>
+                        </div>
+                        <div class="example-box form-group row align-items-center"
+                            *ngFor="let change of updateProjectSignatureModel.projectSignatures; let indexOfChange = index"
+                            cdkDrag>
+                            <ng-container *ngIf="!change.isDeleted">
+                                <div class="example-handle col-1 text-center" cdkDragHandle>
+                                    <i class="fa fa-arrows" aria-hidden="true"></i>
+                                </div>
+                                <div class="col-5">
+                                    <ng-select name="authorizationName" [items]="authorizationLevelModels"
+                                        bindLabel="value" bindValue="id" class="select-signature"
+                                        placeholder="Authorization level" [(ngModel)]="change.authorizationId"
+                                        (change)="onCheckEdit()" [clearable]="false">
+                                    </ng-select>
+                                </div>
+                                <div class="col-5">
+                                    <input type="text" placeholder="Description" [(ngModel)]="change.description"
+                                        (change)="onCheckEdit()" (keyup)="onCheckEdit()" class="form-control" />
+                                </div>
+                                <div class="col-1 text-center">
+                                    <button mat-mini-fab color="warn" class="mat-mini-fab-sm"
+                                        (click)="onClickDeleteChangeSignature(indexOfChange, change)">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+
+                                <div *ngIf="hasShowWarningSignatureValidate && (!change.authorizationId || !change.description)"
+                                    class="error col-12 text-center">
+                                    Please complete all mandatory fields and re-submit again!
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

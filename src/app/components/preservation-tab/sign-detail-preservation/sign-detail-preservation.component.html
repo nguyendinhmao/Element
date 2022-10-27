@@ -1,0 +1,43 @@
+<div class="modal fade" id="signDetailPreservationModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content has-shadow">
+      <div class="modal-header">
+        <h5 class="modal-title">Signatures</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="signatureModel && signatureModel.length > 0">
+          <div class="row justify-content-between" *ngFor="let item of signatureModel; let i = index"
+            [ngClass]="{'mb-3': i < signatureModel.length - 1}">
+            <div class="col">
+              <span>{{item.description}}:</span>
+            </div>
+            <div class="col">
+              <span>{{item.signedName}}</span>
+            </div>
+            <div class="col text-right">
+              <span>{{item.signDate | date: 'dd/MM/yyyy'}}</span>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex w-100 align-items-center justify-content-between">
+          <div *ngIf="isShowSubmit">
+            <span class="link-another-sign" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+              data-target="#confirmPinCodeModal" (click)="onLoginConfirm()">Sign as different user</span>
+          </div>
+          <div class="d-flex">
+            <button mat-raised-button color="success" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+              data-target="#confirmPinCodeModal" *ngIf="isShowSubmit" (click)="onSubmit()">
+              <span>Sign</span>
+            </button>
+            <a mat-raised-button data-dismiss="modal" (click)="onCancel()" class="ml-2">Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

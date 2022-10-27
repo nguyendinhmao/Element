@@ -1,0 +1,33 @@
+.change-shrinked {
+    width: calc(100% - 400px);
+    margin-left: 0;
+    transition: all 0.2s ease;
+}
+
+.change-attachments {
+    i {
+        position: absolute;
+        top: 5px;
+        right: 0;
+        background-color: #3071b8;
+        color: #fff;
+        padding: 10px 12px;
+        border-radius: 4px 0 0 4px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.right-sidebar {
+    .mat-sidenav {
+        width: 400px;
+
+        .close {
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+}

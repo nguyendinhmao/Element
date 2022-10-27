@@ -1,0 +1,37 @@
+.custom-mat-btn {
+  height: 0;
+  width: 0;
+  line-height: 0;
+}
+
+.icon-symbol {
+  padding: 2px;
+  font-size: 20px;
+}
+
+.custom-close {
+  margin-top: -2px;
+  width: 11px;
+  border: 0;
+  background-color: transparent;
+  color: rgba(115, 115, 115, 0.8);
+  .icon-symbol-close {
+    font-size: 1rem !important;
+    height: 0;
+    width: 0;
+  }
+
+  &:hover {
+    color: red;
+  }
+}
+
+.navigate-btn {
+  font-weight: 700;
+  color: rgba(20, 20, 20, 0.8);
+  font-size: 14px;
+
+  &:hover {
+    color: rgba(7, 7, 7, 1);
+  }
+}

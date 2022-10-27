@@ -1,0 +1,248 @@
+<div class="container-fluid">
+  <div class="row align-items-center no-gutters justify-content-between">
+    <div class="col-12 col-md mb-2">
+      <a mat-raised-button [routerLink]="['', 'modules', moduleKey, 'projects', projectKey, 'preservation-tab']">
+        <i class="fas fa-arrow-left mr-1"></i>Back to list
+      </a>
+    </div>
+    <div class="mt-2 mt-lg-0">
+      <button class="mr-2 mb-2" mat-raised-button color="primary" data-toggle="modal" data-backdrop="static"
+        data-keyboard="false" *ngIf="onCheckPermission(permissionsViews.PRESERVATION_TAB_ADD_PRESERVATION)"
+        data-target="#addDetailPreservationModal" (click)="onOpenAddDetailPreservationModal()">
+        <i class="fas fa-plus mb-1 mr-1"></i>Add New
+      </button>
+      <button mat-raised-button color="primary" class="mr-2 mb-2" [disabled]="resumeCount < 1" data-toggle="modal"
+        data-backdrop="static" data-keyboard="false"
+        *ngIf="onCheckPermission(permissionsViews.PRESERVATION_TAB_RESUME_PRESERVATION)"
+        [ngStyle]="{'background-color': !(resumeCount < 1)?'#28a745':'rgba(0,0,0,.12)'}"
+        data-target="#justificationPresTabModal" (click)="onOpenResumeAllJustification()">
+        <i class="far fa-play-circle mb-1 mr-1"></i>Resume
+      </button>
+      <button mat-raised-button color="primary" class="mr-2 mb-2" [disabled]="pauseCount < 1" data-toggle="modal"
+        data-backdrop="static" data-keyboard="false"
+        *ngIf="onCheckPermission(permissionsViews.PRESERVATION_TAB_PAUSE_PRESERVATION)"
+        [ngStyle]="{'background-color': !(pauseCount < 1)?'#fc8d1e':'rgba(0,0,0,.12)'}"
+        data-target="#justificationPresTabModal" (click)="onOpenPauseAllJustification()">
+        <i class="far fa-pause-circle mb-1 mr-1"></i>Pause
+      </button>
+      <button mat-raised-button color="primary" class="mr-2 mb-2" [disabled]="stopCount < 1" data-toggle="modal"
+        data-backdrop="static" data-keyboard="false"
+        *ngIf="onCheckPermission(permissionsViews.PRESERVATION_TAB_STOP_PRESERVATION)"
+        [ngStyle]="{'background-color': !(stopCount < 1)?'#6c757d':'rgba(0,0,0,.12)'}"
+        data-target="#justificationPresTabModal" (click)="onOpenStopAllJustification()">
+        <i class="far fa-stop-circle mb-1 mr-1"></i>Stop
+      </button>
+      <button mat-raised-button color="warn" class="mb-2" data-toggle="modal" data-backdrop="static"
+        *ngIf="onCheckPermission(permissionsViews.PRESERVATION_TAB_DELETE_PRESERVATION)" data-keyboard="false"
+        data-target="#confirmModal" (click)="onOpenDeleteAllModal()">
+        <i class="far fa-trash-alt mb-1 mr-1"></i>Delete
+      </button>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-12 mt-3">
+      <div class="box has-shadow w-100">
+        <div class="box-body">
+          <div class="table-container table-responsive">
+            <table mat-table [dataSource]="dataSource" matSort class="table table-striped table-bordered table-hover"
+              *ngIf="detailPreservationTabModels && detailPreservationTabModels.length > 0">
+              <!-- Checkbox Column -->
+              <ng-container matColumnDef="selectPres">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                  <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                  </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row" class="text-center">
+                  <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? onSelectElement(row) : null"
+                    [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="elementPres">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Element</th>
+                <td mat-cell *matCellDef="let e">
+                  <span class="tagNo-pres-item" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                    data-target="#elementPreservationInfoModal" (click)="onOpenElementInfoModal(e)">
+                    {{e.element}}
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="preservationNo">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Preservation No.</th>
+                <td mat-cell *matCellDef="let element" class="text-center">{{element.preservationNo}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="frequencyPres">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Frequency</th>
+                <td mat-cell *matCellDef="let element" class="text-center">{{element.frequency}}</td>
+              </ng-container>
+              <ng-container matColumnDef="typePres">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Type</th>
+                <td mat-cell *matCellDef="let element" class="text-center">{{element.type}}</td>
+              </ng-container>
+              <ng-container matColumnDef="dateDuePres">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Date Due</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  <span>{{convertDateString(element.dateDue)}}</span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="statusPres">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Status</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  <span class="badge p-2 d-block text-uppercase" [ngClass]="statusColor[element.status.toUpperCase()]">
+                    {{statusDisplay[element.status.toUpperCase()]}}
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="pauseOrStopPres">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Pause/Stop</th>
+                <td mat-cell *matCellDef="let element">
+                  <div *ngIf="isShowPauseOrStop(element)" class="pres-pause-stop-in-cell justify-content-center">
+                    <div class="pres-block-icon pres-pause-icon"
+                      [ngStyle]="{'background-color': !(element.status === 'PAUSED')?'#fc8d1e':'#28a745'}"
+                      data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                      data-target="#justificationPresTabModal" (click)="onPauseBtnClick(element)">
+                      <i *ngIf="element.status === 'PAUSED'" class="fas fa-play"></i>
+                      <i *ngIf="!(element.status === 'PAUSED')" class="fas fa-pause"></i>
+                    </div>
+                    <div class="pres-block-icon pres-stop-icon" data-toggle="modal" data-backdrop="static"
+                      data-keyboard="false" data-target="#justificationPresTabModal" (click)="onStopBtnClick(element)">
+                      <i class="fas fa-stop"></i>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="signaturePres">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Signature</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  <div
+                    *ngIf="(preservationStatusEnum[element.status] > 6) && (element.signatures && element.signatures.length > 0)"
+                    data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                    data-target="#signDetailPreservationModal"
+                    (click)="onOpenSignatureModal(element.signatures, element)" class="cursor-pointer">
+                    <ng-container *ngFor="let sign of element.signatures">
+                      <i class="fas fa-check ml-1"
+                        [ngClass]="{'text-success': sign['signDate'] != null ,'text-secondary': sign['signDate'] == null}"></i>
+                    </ng-container>
+                  </div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="imagesPres">
+                <th mat-header-cell *matHeaderCellDef class="text-center text-nowrap">Images</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  <div *ngIf="checkRunningStatus(element)" class="images-container">
+                    <span matBadge="{{element.images.length}}" matBadgeSize="small" *ngIf="(element.images.length > 0)"
+                      style="cursor: pointer">
+                      <i class="fas fa-images" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                        data-target="#imageDetailPreservationModal" (click)="onShowImages(element, element.images)"></i>
+                    </span>
+                    <span
+                      *ngIf="(element.images.length === 0) && onCheckPermission(permissionsViews.PRESERVATION_TAB_UPDATE_IMAGE_PRESERVATION)"
+                      class="add-img-prestab">
+                      <i class="fas fa-plus" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                        data-target="#imageDetailPreservationModal" (click)="onShowImages(element)"></i>
+                    </span>
+                  </div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="dateCompletePres">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Date Complete</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  <span>{{convertDateString(element.dateComplete)}}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="haltedBy">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Halted By</th>
+                <td mat-cell *matCellDef="let element" class="text-center">{{element.haltedBy}}</td>
+              </ng-container>
+              <ng-container matColumnDef="haltedDate">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Halted Date</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                  {{convertDateString(element.haltedDate)}}</td>
+              </ng-container>
+              <ng-container matColumnDef="comment">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Comment</th>
+                <td mat-cell *matCellDef="let element" class="text-center">{{element.comment}}</td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <!-- Datatable empty -->
+            <table class="table table-bordered table-hover" role="grid"
+              *ngIf="detailPreservationTabModels && detailPreservationTabModels.length === 0">
+              <thead role="rowgroup">
+                <tr class="mat-header-row" role="row">
+                  <th class="mat-header-cell" role="columnheader" class="text-center">
+                    <mat-checkbox>
+                    </mat-checkbox>
+                  </th>
+                  <th class="mat-header-cell" role="columnheader">Element</th>
+                  <th class="mat-header-cell" role="columnheader">Preservation No.</th>
+                  <th class="mat-header-cell" role="columnheader">Frequency</th>
+                  <th class="mat-header-cell" role="columnheader">Type</th>
+                  <th class="mat-header-cell" role="columnheader">Date Due</th>
+                  <th class="mat-header-cell" role="columnheader">Status</th>
+                  <th class="mat-header-cell" role="columnheader">Pause/Stop</th>
+                  <th class="mat-header-cell" role="columnheader">Signature</th>
+                  <th class="mat-header-cell" role="columnheader">Images</th>
+                  <th class="mat-header-cell" role="columnheader">Date Complete</th>
+                  <th class="mat-header-cell" role="columnheader">Halted By</th>
+                  <th class="mat-header-cell" role="columnheader">Halted Date</th>
+                  <th class="mat-header-cell" role="columnheader">Comment</th>
+                </tr>
+              </thead>
+              <tbody role="rowgroup">
+                <tr class="mat-row" role="row">
+                  <td class="text-center" colspan="17">
+                    There is no item!
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[50, 100, 200]" [pageSize]="50"
+              *ngIf="detailPreservationTabModels && detailPreservationTabModels.length !== 0"
+              (page)="onGetListDetailPreservation($event.pageIndex,$event.pageSize)" [length]="detailPreservationCount">
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<element-preservation-info *ngIf="isOpenElementInfoState" [visible]="isOpenElementInfoState"
+  [preservationId]="elementId" (onSuccess)="onCancelElementInfoModal($event)" [elementInfo]="elementInfo">
+</element-preservation-info>
+
+<confirm-pin-code-modal *ngIf="isShowPinCode" [visible]="isShowPinCode" [isShowCreatePinCode]="isShowCreatePinCode"
+  (onSuccess)="onPinCodeConfirmModal($event)">
+</confirm-pin-code-modal>
+
+<sign-detail-preservation *ngIf="isShowSignature" [visible]="isShowSignature" [signatureModel]="signatureModel"
+  [elementId]="elementId" [isShowSubmit]="isShowSignBtn" (onSuccess)="onSignatureConfirm($event)">
+</sign-detail-preservation>
+
+<another-user-sign-preservation *ngIf="hasShowLoginModal" [visible]="hasShowLoginModal" [elementId]="elementId"
+  (onSign)="onLoginModalRes($event)"></another-user-sign-preservation>
+
+<image-detail-preservation *ngIf="isOpenImages" [visible]="isOpenImages" [imageLookUpModel]="imageLookUpModel"
+  [elementId]="elementId" [isInitialImageDelete]='isInitialImageDelete' (onSuccess)="onConfirmImages($event)">
+</image-detail-preservation>
+
+<justification-prestab-modal *ngIf="isPauseStopShow" [visible]="isPauseStopShow" [jQuestionContent]="jQuestionContent"
+  [elements]="elements" [status]="statusUpdate" (onSubmit)="onSubmitJustification($event)">
+</justification-prestab-modal>
+
+<confirm-modal *ngIf="isDeleteAllState" [visible]="isDeleteAllState" (confirm)="onDeleteAllConfirm($event)"
+  [header]="'Confirm'" [content]="'Are you sure want to delete?'"></confirm-modal>
+
+<add-detail-preservation *ngIf="isShowAddDetailPreservation" (onSubmit)="onAddNewElement($event)">
+</add-detail-preservation>

@@ -1,0 +1,10 @@
+.form-group {
+  .form-control {
+    min-height: 40px;
+    font-size: 1rem !important;
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+}

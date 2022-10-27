@@ -1,0 +1,34 @@
+<div class="modal fade" id="confirmPinCodeModal" [ngClass]="{'show d-block': isShowPinCode}" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content has-shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">PIN CODE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (ngSubmit)="onConfirm(f)" #f="ngForm" novalidate>
+        <div class="modal-body">
+          <div *ngIf="isShowCreatePinCode" class="w-100 text-center">
+            You dont have PIN code.<br>
+            Please create PIN code before sign-off!
+          </div>
+          <div class="form-group" *ngIf="!isShowCreatePinCode">
+            <label>PIN code <span class="required"></span></label>
+            <input type="password" class="form-control" placeholder="Enter pin code" name="pinCode" maxlength="6"
+              pattern="^(\d{6})$" reverse="true" [(ngModel)]="code" #pinCode="ngModel" required autocomplete="off">
+            <div class="error" *ngIf="pinCode.invalid && (pinCode.dirty || pinCode.touched || f.submitted)">
+              <div *ngIf="pinCode.errors?.required">This is required field</div>
+              <div *ngIf="pinCode.errors?.pattern">Pin code have 6 number</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button mat-raised-button color="success" type="submit"
+            class="mr-2">{{isShowCreatePinCode ? "OK" : "Confirm"}}</button>
+          <a mat-raised-button data-dismiss="modal" (click)="onClose()">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

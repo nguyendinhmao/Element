@@ -1,0 +1,169 @@
+<div *ngIf="visible" class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content has-shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Edit Punch {{updationModel.punchNo}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form (ngSubmit)="onSaveData(f)" #f="ngForm" novalidate>
+        <div class="modal-body">
+          <div class="row ml-n1 mr-n1">
+            <div class="col-8 col-md-8 col-lg-6 pl-1 pr-1">
+              <div class="row ml-n1 mr-n1">
+                <div class="col-6 col-md-6 col-lg-6 pl-1 pr-1">
+                  <div class="form-group">
+                    <label>Type: <span class="required"></span></label>
+                    <select class="form-control" name="punchTypeId" [(ngModel)]="updationModel.punchTypeId"
+                      #punchTypeId="ngModel">
+                      <option [ngValue]="null">Select Type</option>
+                      <option *ngFor="let item of punchTypeModels" [value]="item.id">{{item.value}}</option>
+                    </select>
+                    <div *ngIf="punchTypeId.invalid && (punchTypeId.dirty || punchTypeId.touched || f.submitted)"
+                      class="error">
+                      <div *ngIf="punchTypeId.errors?.required">This field is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-6 col-lg-6 pl-1 pr-1">
+                  <div class="form-group">
+                    <label>Category: <span class="required"></span></label>
+                    <select class="form-control" name="category" id="category" #category="ngModel"
+                      [(ngModel)]="updationModel.category">
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                    </select>
+                    <div *ngIf="category.invalid && (category.dirty || category.touched || f.submitted)" class="error">
+                      <div *ngIf="category.errors?.required">This field is required</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row ml-n1 mr-n1">
+                <div class="col-6 col-md-6 col-lg-6 pl-1 pr-1">
+                  <div class="form-group">
+                    <label>Location: <span class="required"></span></label>
+                    <ng-select name="location" [items]="locationLookUpModels" bindValue="id" bindLabel="value"
+                      placeholder="Select Location Code" [(ngModel)]="updationModel.location" #location="ngModel"
+                      required>
+                    </ng-select>
+                    <div *ngIf="location.invalid && (location.dirty || location.touched || f.submitted)" class="error">
+                      <div *ngIf="location.errors?.required">This field is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-6 col-lg-6 pl-1 pr-1">
+                  <div class="form-group">
+                    <label>Drawing: <span class="required"></span></label>
+                    <ng-select name="drawing" [items]="drawingTempModels" [multiple]="true" bindValue="drawingId"
+                      bindLabel="drawingNo" placeholder="Select drawing" #drawing="ngModel"
+                      [(ngModel)]="updationModel.drawingIds">
+                      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                        <span class="ng-value-label">{{item.drawingNo}} <span *ngIf="item.isLocationDrawing"
+                            class="ml-1 badge-success badge font-weight-normal">
+                            Location
+                          </span></span>
+                        <span class="ng-value-icon right" (click)="onClearDrawingSelect(item)">×</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <div class="float-left text-left">
+                          <span>{{item.drawingNo}}</span>
+                        </div>
+                        <div class="float-right text-right">
+                          <span *ngIf="item.isLocationDrawing" class="badge-success badge font-weight-normal p-2">
+                            Location
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-4 col-md-4 col-lg-6 pl-1 pr-1">
+              <div class="form-group h-100">
+                <label>Description: <span class="required"></span></label>
+                <textarea name="description" rows="5" placeholder="Enter description"
+                  class="form-control txt-description" #description="ngModel" [(ngModel)]="updationModel.description"
+                  required></textarea>
+                <div *ngIf="description.invalid && (description.dirty || description.touched || f.submitted)"
+                  class="error">
+                  <div *ngIf="description.errors?.required">This field is required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row ml-n1 mr-n1">
+            <div class="col-8 col-md-8 col-lg-6 pl-1 pr-1">
+              <div class="row ml-n1 mr-n1">
+                <div class="col-6 col-md-6 col-lg-6 pl-1 pr-1">
+                  <div class="form-group">
+                    <label>Tag: <span class="required"></span></label>
+                    <ng-select name="tag" [items]="tagModels" bindValue="id" bindLabel="value" placeholder="Select tag"
+                      #tag="ngModel" [(ngModel)]="updationModel.tagId" [virtualScroll]="true" [dropdownPosition]="'top'"
+                      required>
+                    </ng-select>
+                    <div *ngIf="tag.invalid && (tag.dirty || tag.touched || f.submitted)" class="error">
+                      <div *ngIf="tag.errors?.required">This field is required</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-6 col-lg-6 pl-1 pr-1">
+                  <div class="form-group">
+                    <label>Materials Required: <span class="required"></span></label>
+                    <select class="form-control" name="materialsRequired" id="materialsRequired"
+                      #materialsRequired="ngModel" [(ngModel)]="updationModel.materialsRequired">
+                      <option [ngValue]="true">Yes</option>
+                      <option [ngValue]="false">No</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row ml-n1 mr-n1">
+
+                <div class="col-6 col-md-6 col-lg-6 pl-1 pr-1">
+                  <div class="form-group" *ngIf="updationModel.materialsRequired">
+                    <label>Order No: <span class="required"></span></label>
+                    <select class="form-control" name="orderId" [(ngModel)]="updationModel.orderId"
+                      [disabled]="!updationModel.materialsRequired">
+                      <option [ngValue]="null">Select Order No</option>
+                      <option *ngFor="let item of orderModels" [value]="item.id">{{item.value}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-4 col-md-4 col-lg-6 pl-1 pr-1">
+              <div class="form-group h-100">
+                <label>Corrective Action: <span class="required"></span></label>
+                <textarea name="correctiveAction" rows="2" placeholder="Enter corrective action"
+                  class="form-control txt-corrective-action" #correctiveAction="ngModel"
+                  [(ngModel)]="updationModel.correctiveAction" required></textarea>
+                <div
+                  *ngIf="correctiveAction.invalid && (correctiveAction.dirty || correctiveAction.touched || f.submitted)"
+                  class="error">
+                  <div *ngIf="correctiveAction.errors?.required">This field is required</div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onCancel()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

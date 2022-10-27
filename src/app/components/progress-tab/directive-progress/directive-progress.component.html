@@ -1,0 +1,41 @@
+<div [ngSwitch]="type" id='directive-report' class="h-100 w-100">
+  <div [ngClass]="{'form-group':type !== type2Switch.date, 'd-flex align-items-end': type === type2Switch.date}"
+    class="h-100 w-100">
+    <label *ngIf="type !== type2Switch.date">{{fieldName}}</label>
+    <!-- input free text -->
+    <input *ngSwitchCase="type2Switch.text" [value]="fieldValue" placeholder="{{placeholder}}" type="text"
+      class="form-control">
+    <!-- input dropdown -->
+    <ng-select *ngSwitchCase="type2Switch.dropdown" name="item" [items]="data" bindValue="id" bindLabel="value"
+      [loading]="isLoadingSelection" (scrollToEnd)="onScrollToEndSelect()" (search)="onSearchSelect($event)"
+      [ngModel]="fieldValue" (change)="onChange($event,type2Switch.dropdown)" [placeholder]="placeholder">
+    </ng-select>
+    <!-- input multiple selection -->
+    <ng-select *ngSwitchCase="type2Switch.multiSelect" name="drawing" [items]="data" [multiple]="true" bindValue="id"
+      bindLabel="value" [placeholder]="placeholder" [ngModel]="fieldValue" [loading]="isLoadingSelection"
+      (scrollToEnd)="onScrollToEndSelect()" (search)="onSearchSelect($event)"
+      (change)="onChange($event,type2Switch.multiSelect)" [closeOnSelect]="false">
+      <ng-template ng-label-tmp let-item="item" let-clear="clear">
+        <div class="d-flex align-items-center">
+          <span class="ng-value-label">{{item.value}}</span>
+          <div class="d-flex align-items-center">
+            <span class="ng-value-icon right border-0" (click)="onDeselected(item.id)">×</span>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template ng-option-tmp let-item="item" let-index="index">
+        <div class="d-flex align-items-center justify-content-between">
+          <span class="w-50 text-truncate">{{item.value}}</span>
+        </div>
+      </ng-template>
+    </ng-select>
+    <!-- input date -->
+    <mat-form-field *ngSwitchCase="type2Switch.date" class="mt-0 w-100">
+      <mat-label>{{fieldName}}</mat-label>
+      <input matInput [matDatepicker]="dtsDate" name="dateStartPlanned" [value]="fieldValue" autocomplete="off"
+        [matDatepickerFilter]="avoidPastDate" (focus)="dtsDate.open()" (dateChange)="onChange($event,type2Switch.date)">
+      <mat-datepicker-toggle matSuffix [for]="dtsDate"></mat-datepicker-toggle>
+      <mat-datepicker #dtsDate></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>

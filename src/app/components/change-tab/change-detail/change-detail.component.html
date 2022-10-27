@@ -1,0 +1,279 @@
+<div class="container-fluid position-relative" [ngClass]="{'change-shrinked': isShowRightSideBar}">
+  <div class="row no-gutters">
+    <div class="col-12">
+      <app-title class="float-left mr-2" [title]="'Change'"></app-title>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-lg-12 mt-3 text-right">
+      <button mat-raised-button color="accent" (click)="onCollapseAll()" class="mr-2">
+        <ng-container *ngIf="!isExpandedAll">
+          Expand <i class="fas fa-chevron-down"></i>
+        </ng-container>
+        <ng-container *ngIf="isExpandedAll">
+          Collapse <i class="fas fa-chevron-up"></i>
+        </ng-container>
+      </button>
+      <button mat-raised-button color="success" *ngIf="permissionsViews.CHANGE_TAB_SIGN_OFF && canSignature"
+        data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#signatureModal"
+        (click)="onOpenSignModal()">
+        Sign-Off
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 mt-3">
+      <mat-accordion multi>
+        <mat-expansion-panel *ngIf="changeFirtStage" [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title *ngIf="changeFirtStage && changeFirtStage.nameStage">
+              {{changeFirtStage.nameStage}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-divider></mat-divider>
+
+          <form class="mt-3" #f="ngForm" novalidate (ngSubmit)="onSubmit(f)">
+            <div class="form-group row">
+              <div class="col-3">
+                <label>No.</label>
+                <input type="text" class="form-control" name="changeNo" [(ngModel)]="changeFirtStage.changeNo"
+                  #changeNo="ngModel" disabled>
+              </div>
+              <div class="col-6">
+                <label>Title: <span class="required"></span></label>
+                <input type="text" class="form-control" name="title" [(ngModel)]="changeFirtStage.title"
+                  #title="ngModel"
+                  [disabled]="!changeFirtStage.isCurrentStage || (changeFirtStage.status && changeFirtStage.status !== changeStatus.Draft && changeFirtStage.status !== changeStatus.Rejected)"
+                  required>
+                <div *ngIf="title.invalid && (title.dirty || title.touched || f.submitted)" class="error">
+                  <div *ngIf="title.errors?.required">This field is required</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <label>Type: <span class="required"></span></label>
+                <ng-select name="type" [items]="changeTypeTempLookupModel" bindValue="id" bindLabel="value"
+                  placeholder="Select type" #type="ngModel" [(ngModel)]="changeFirtStage.changeTypeId"
+                  [disabled]="!changeFirtStage.isCurrentStage || (changeFirtStage.status && changeFirtStage.status !== changeStatus.Draft && changeFirtStage.status !== changeStatus.Rejected) || isSpecialType" class="ng-select-height-custom"
+                  (scrollToEnd)="onScrollToEndSelect(selectionControlName.type)"
+                  (search)="onSearchSelect($event, selectionControlName.type)"
+                  (clear)="onClearSelect(selectionControlName.type)" required
+                  [disabled]="!changeFirtStage.isCurrentStage || (changeFirtStage.status && changeFirtStage.status !== changeStatus.Draft && changeFirtStage.status !== changeStatus.Rejected)"
+                  class="ng-select-height-custom">
+                </ng-select>
+                <div *ngIf="type.invalid && (type.dirty || type.touched || f.submitted)" class="error">
+                  <div *ngIf="type.errors?.required">This field is required</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-4">
+                <label>System: <span class="required"></span></label>
+                <ng-select class="ng-select-height-custom" required name="system" [items]="systemTempModels"
+                  bindValue="id" [multiple]="true" bindLabel="value" placeholder="Select system" #system="ngModel"
+                  [(ngModel)]="changeFirtStage.systemIds" appendTo="body" [virtualScroll]="true"
+                  [loading]="loadingSelection.isLoadingSystem"
+                  (scrollToEnd)="onScrollToEndSelect(selectionControlName.system)"
+                  (search)="onSearchSelect($event, selectionControlName.system)"
+                  (clear)="onClearSelect(selectionControlName.system)"
+                  [disabled]="!changeFirtStage.isCurrentStage || (changeFirtStage.status && changeFirtStage.status !== changeStatus.Draft && changeFirtStage.status !== changeStatus.Rejected)">
+                </ng-select>
+                <div *ngIf="system.invalid && (system.dirty || system.touched || f.submitted)" class="error">
+                  <div *ngIf="system.errors?.required">This field is required</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <label>Sub-system: <span class="required"></span></label>
+                <ng-select class="ng-select-height-custom" required name="subSystem" [items]="subSystemTempModels"
+                  bindValue="id" [multiple]="true" bindLabel="value" placeholder="Select sub-system"
+                  #subSystem="ngModel" [(ngModel)]="changeFirtStage.subSystemIds" appendTo="body" [virtualScroll]="true"
+                  [loading]="loadingSelection.isLoadingSubSystem"
+                  (scrollToEnd)="onScrollToEndSelect(selectionControlName.subSystem)"
+                  (search)="onSearchSelect($event, selectionControlName.subSystem)"
+                  (clear)="onClearSelect(selectionControlName.subSystem)"
+                  [disabled]="!changeFirtStage.isCurrentStage || (changeFirtStage.status && changeFirtStage.status !== changeStatus.Draft && changeFirtStage.status !== changeStatus.Rejected)">
+                </ng-select>
+                <div *ngIf="subSystem.invalid && (subSystem.dirty || subSystem.touched || f.submitted)" class="error">
+                  <div *ngIf="subSystem.errors?.required">This field is required</div>
+                </div>
+              </div>
+              <div class="col-4" *ngIf="!isSpecialType">
+                <label>Discipline:</label>
+                <ng-select name="discipline" class="ng-select-height-custom" [items]="disciplineTempModels"
+                  bindValue="id" [multiple]="true" bindLabel="value" placeholder="Select discipline"
+                  #discipline="ngModel" [(ngModel)]="changeFirtStage.disciplineIds" appendTo="body"
+                  [virtualScroll]="true" [loading]="loadingSelection.isLoadingDiscipline"
+                  (scrollToEnd)="onScrollToEndSelect(selectionControlName.discipline)"
+                  (search)="onSearchSelect($event, selectionControlName.discipline)"
+                  (clear)="onClearSelect(selectionControlName.discipline)"
+                  [disabled]="!changeFirtStage.isCurrentStage || (changeFirtStage.status && changeFirtStage.status !== changeStatus.Draft && changeFirtStage.status !== changeStatus.Rejected)">
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-12">
+                <label>Description: <span class="required"></span></label>
+                <textarea rows="3" required class="form-control" name="description"
+                  [(ngModel)]="changeFirtStage.description" #description="ngModel"
+                  [disabled]="!changeFirtStage.isCurrentStage || (changeFirtStage.status && changeFirtStage.status !== changeStatus.Draft && changeFirtStage.status !== changeStatus.Rejected)"></textarea>
+                <div *ngIf="description.invalid && (description.dirty || description.touched || f.submitted)"
+                  class="error">
+                  <div *ngIf="description.errors?.required">This field is required</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row" *ngIf="!isSpecialType">
+              <div class="col-12">
+                <label>Justification: <span class="required"></span></label>
+                <textarea rows="3" type="text" required class="form-control" name="justification"
+                  [(ngModel)]="changeFirtStage.justification" #justification="ngModel"
+                  [disabled]="!changeFirtStage.isCurrentStage || (changeFirtStage.status && changeFirtStage.status !== changeStatus.Draft && changeFirtStage.status !== changeStatus.Rejected)"></textarea>
+                <div *ngIf="justification.invalid && (justification.dirty || justification.touched || f.submitted)"
+                  class="error">
+                  <div *ngIf="justification.errors?.required">This field is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="!isSpecialType">
+              <div class="col-12">
+                <label>Proposed Solution: <span class="required"></span></label>
+                <textarea rows="3" type="text" required class="form-control" name="proposedSolution"
+                  [(ngModel)]="changeFirtStage.proposedSolution" #proposedSolution="ngModel"
+                  [disabled]="!changeFirtStage.isCurrentStage || (changeFirtStage.status && changeFirtStage.status !== changeStatus.Draft && changeFirtStage.status !== changeStatus.Rejected)"></textarea>
+                <div
+                  *ngIf="proposedSolution.invalid && (proposedSolution.dirty || proposedSolution.touched || f.submitted)"
+                  class="error">
+                  <div *ngIf="proposedSolution.errors?.required">This field is required</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label>Comments:</label>
+              <p class="text-primary"><i>{{changeFirtStage.comment ? changeFirtStage.comment : "No comments yet"}}</i>
+              </p>
+            </div>
+            <mat-action-row>
+              <button
+                *ngIf="( changeFirtStage.isCurrentStage && changeFirtStage.status && changeFirtStage.isHaveEditPermission ) && (changeFirtStage.status === changeStatus.Draft || changeFirtStage.status === changeStatus.Rejected )"
+                mat-raised-button type="button" color="primary" (click)="onSaveAsDraft()">
+                <i class="fas fa-save mr-1"></i>Save
+              </button>
+              <button
+                *ngIf="( changeFirtStage.isCurrentStage && changeFirtStage.status && changeFirtStage.isHaveEditPermission ) && (changeFirtStage.status === changeStatus.Draft || changeFirtStage.status === changeStatus.Rejected)"
+                mat-raised-button color="success" class="ml-2" type="submit">
+                Submit
+              </button>
+              <button
+                *ngIf="changeFirtStage.isCurrentStage && changeFirtStage.status && changeFirtStage.status === changeStatus.Submitted && changeFirtStage.isHaveApprovePermission"
+                mat-raised-button color="success" class="ml-2" type="button" mat-raised-button color="success"
+                class="ml-2" type="button" (click)="onApprove(changeFirtStage.changeStageId)" data-toggle="modal"
+                data-backdrop="static" data-keyboard="false" data-target="#confirmModal"
+                (click)="onApprove(changeFirtStage.changeStageId)">
+                <i class="fas fa-check mr-1"></i> Approve
+              </button>
+              <button
+                *ngIf="changeFirtStage.isCurrentStage && changeFirtStage.status && changeFirtStage.status === changeStatus.Submitted && changeFirtStage.isHaveApprovePermission"
+                mat-raised-button color="success" class="ml-2" type="button"
+                (click)="onReject(changeFirtStage.changeStageId)" mat-raised-button color="success" class="ml-2"
+                type="button" (click)="onApprove(changeFirtStage.changeStageId)" data-toggle="modal"
+                data-backdrop="static" data-keyboard="false" data-target="#confirmModal">
+                <i class="fas fa-ban mr-1"></i> Reject
+              </button>
+            </mat-action-row>
+          </form>
+        </mat-expansion-panel>
+
+        <ng-container *ngIf="changeOtherStage && changeOtherStage.length > 0">
+          <mat-expansion-panel *ngFor="let elem of changeOtherStage"
+            [expanded]="elem && elem.isCurrentStage || isExpandedAll">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{elem.nameStage}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-divider></mat-divider>
+
+            <form class="mt-3">
+              <div class="form-group row">
+                <div class="col-12">
+                  <label>Response</label>
+                  <textarea rows="5" class="form-control" name="response" [(ngModel)]="elem.response"
+                    #response="ngModel"
+                    [disabled]="!elem.isCurrentStage || (elem.status && elem.status !== changeStatus.Draft && elem.status !== changeStatus.Rejected)"></textarea>
+                </div>
+              </div>
+            </form>
+            <div>
+              <label>Comments:</label>
+              <p class="text-primary"><i>{{elem.comment ? elem.comment : "No comments yet"}}</i></p>
+            </div>
+            <mat-action-row>
+              <button mat-raised-button color="primary" (click)="onSaveStageDraft(elem)"
+                *ngIf="(elem.isCurrentStage && elem.isHaveEditPermission && elem.status) && (elem.status === changeStatus.Draft || elem.status === changeStatus.Rejected)">
+                <i class="fas fa-save mr-1"></i>Save
+              </button>
+
+              <button mat-raised-button color="success" class="ml-2"
+                *ngIf="(elem.isCurrentStage && elem.status && elem.isHaveEditPermission) && (elem.status === changeStatus.Draft || elem.status === changeStatus.Rejected)"
+                (click)="onSubmitOtherStage(elem)">
+                Submit
+              </button>
+              <button
+                *ngIf="elem.isCurrentStage && elem.status && elem.status === changeStatus.Submitted && elem.isHaveApprovePermission"
+                mat-raised-button color="success" class="ml-2" type="button" (click)="onApprove(elem.changeStageId)"
+                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#confirmModal">
+                <i class="fas fa-check mr-1"></i> Approve
+              </button>
+              <button
+                *ngIf="elem.isCurrentStage && elem.status && elem.status === changeStatus.Submitted && elem.isHaveApprovePermission"
+                mat-raised-button color="success" class="ml-2" type="button" (click)="onReject(elem.changeStageId)"
+                data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#confirmModal">
+                <i class="fas fa-ban mr-1"></i> Reject
+              </button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        </ng-container>
+      </mat-accordion>
+    </div>
+  </div>
+</div>
+
+<div class="change-attachments">
+  <i class="fas fa-paperclip" (click)="openRightSideBar()"></i>
+</div>
+
+<div class="right-sidebar" *ngIf="isShowRightSideBar">
+  <mat-sidenav [opened]="isShowRightSideBar" mode="push" position="end">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-right mt-1">
+          <button type="button" class="close" aria-label="Close" (click)="closeRightSideBar()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <change-attachments [changeId]="changeId"></change-attachments>
+  </mat-sidenav>
+</div>
+<confirm-reason-modal *ngIf="isRejectState" [visible]="isRejectState" (reason)="onRejectConfirm($event)"
+  (cancel)="onCancelReject($event)" [header]="'Confirm'" [content]="'Are you sure want to reject?'">
+</confirm-reason-modal>
+
+<confirm-modal *ngIf="isApproveState" [visible]="isApproveState" (confirm)="onApproveConfirm($event)"
+  [header]="'Confirm'" [content]="'Are you sure want to approve?'"></confirm-modal>
+
+<confirm-modal *ngIf="isSignState" [visible]="isSignState" (confirm)="onSignConfirm($event)" [header]="'Confirm'"
+  [content]="'Are you sure want to sign?'"></confirm-modal>
+
+<confirm-pin-code-modal *ngIf="isShowPinCode" [visible]="isShowPinCode" [isShowPinCode]="isShowPinCode"
+  [isShowCreatePinCode]="isShowCreatePinCode" (onSuccess)="onPinCodeConfirmModal($event)">
+</confirm-pin-code-modal>
+
+<signatures-info-change *ngIf="isShowSignature" [visible]="isShowSignature" [signatureModel]="signatureModel"
+  [isShowSubmit]="isCanSignature" [changeId]="changeId" (onSuccess)="onSignConfirm($event)"></signatures-info-change>

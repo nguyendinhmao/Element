@@ -1,0 +1,33 @@
+.dropdown-search {
+  position: absolute;
+  top: 35px;
+  width: 100%;
+}
+
+//--- Large screen
+@media only screen and (min-width: 1600px) {
+  .dropdown-search {
+    width: 75%;
+  }
+}
+
+//--- Laptop
+@media only screen and (min-width: 1025px) and (max-width: 1400px) {
+  .dropdown-search {
+    width: 75%;
+  }
+}
+
+//--- Tablet
+@media (min-width: 768px) and (max-width: 1024px) {
+  .dropdown-search {
+    width: 100%;
+  }
+}
+
+//--- Low Resolution Tablets
+@media (min-width: 481px) and (max-width: 767px) and (orientation: portrait) {
+  .dropdown-search {
+    width: 100%;
+  }
+}

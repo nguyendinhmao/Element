@@ -1,0 +1,20 @@
+<div id="confirmNotSave" class="modal-xl modal-dialog-centered modal-dialog-scrollable m-0" role="document">
+  <div class="modal-content has-shadow">
+    <div class="modal-header pt-2 pb-2">
+      <h5 class="modal-title" id="exampleModalCenterTitle">Data Template Unsave</h5>
+      <button type="button" class="close" aria-label="Close" mat-dialog-close>
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div mat-dialog-content class="modal-body m-0 pt-2 pl-3 pr-3 pb-2">
+      <div class="d-flex justify-content-center align-items-center text-center">
+        Your data template doesn't save. Please save it before continuing or you will lost
+        the current template. Do you want to continue?
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button mat-raised-button color="warn" (click)="onClose(true)" class="mr-2">Continue</button>
+      <a mat-raised-button (click)="onClose()">Cancel</a>
+    </div>
+  </div>
+</div>

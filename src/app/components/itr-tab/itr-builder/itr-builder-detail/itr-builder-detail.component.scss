@@ -1,0 +1,56 @@
+.nav-tabs {
+    .nav-item {
+        text-align: center;
+        width: 10rem;
+
+        .unsave-icon {
+            width: 20px;
+            margin-top: -5px;
+            margin-left: 5px;
+        }
+
+        .nav-link {
+            border: 0;
+            color: rgba(0, 0, 0, .54);
+            padding: 0.7rem 1rem;
+            text-transform: uppercase;
+
+            &.active {
+                color: rgba(0, 0, 0, .87);
+                border-bottom: 3px solid #3071b8;
+            }
+        }
+    }
+}
+
+.tab-content {
+    .edit-template-name {
+        border: 2px solid #000000;
+        padding: 5px 10px;
+        border-radius: 4px;
+
+        &:focus {
+            border: 2px solid #000000;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+    }
+}
+
+.warning-template-name-is-existing {
+    color: red;
+    font-size: 13px;
+}
+
+.fa-arrows:before {
+    content: "☩";
+}
+
+.itr-builder-align-custom-icon {
+    background-color: red;
+}
+
+.style-manage-button-custom {
+    display: inline-block;
+    width: 50%;
+}

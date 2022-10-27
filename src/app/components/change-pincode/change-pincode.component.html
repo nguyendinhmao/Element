@@ -1,0 +1,163 @@
+<div id="personalInformation">
+  <div class="container-fluid">
+    <div class="row">
+      <app-title class="col-12 d-flex" [title]="'Change Pin Code'"></app-title>
+      <div class="col-md-3 col-lg-3 mt-3">
+        <div class="box has-shadow w-100">
+          <div class="box-body">
+            <div class="personal-info-left">
+              <div class="personal-info-head">
+                <!-- <div class="personal-info-avatar">
+                  <img src="{{personalLogoUrl}}" alt="image">
+                </div> -->
+                <div class="personal-info-content">
+                  <div class="personal-info-section">
+                    <a class="personal-info-username">
+                      {{userProfileModel.firstName}} {{userProfileModel.surname}}
+                    </a>
+                    <span class="personal-info-subtitle">
+                      Administrator
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="personal-info-body">
+                <div class="personal-info-content">
+                  <div class="personal-info-info">
+                    <span class="personal-info-label">Email:</span>
+                    <a href="#" class="personal-info-data">{{userProfileModel.email}}</a>
+                  </div>
+                  <!-- <div class="personal-info-info">
+                    <span class="personal-info-label">Phone:</span>
+                    <a href="#" class="personal-info-data">{{userProfileModel.phoneNumber}}</a>
+                  </div> -->
+                </div>
+
+                <div class="personal-info-items">
+                  <a [routerLink]="['', 'personal-information']">
+                    <i class="fas fa-user mr-2"></i>
+                    Personal Information
+                  </a>
+                  <a [routerLink]="['', 'change-password']">
+                    <i class="fas fa-key mr-2"></i> Change password
+                  </a>
+                  <a class="active" [routerLink]="['', 'change-pincode']">
+                    <i class="fas fa-key mr-2"></i> <span *ngIf="userProfileModel.havePinCode"> Change PIN
+                      code</span><span *ngIf="!userProfileModel.havePinCode"> Create PIN code</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9 col-lg-9 mt-3">
+        <div class="box has-shadow w-100">
+          <div class="box-header bordered d-flex align-items-center">
+            <h2 *ngIf="userProfileModel.havePinCode">
+              Change PIN code
+              <small> change or reset your account Pin code</small>
+            </h2>
+            <h2 *ngIf="!userProfileModel.havePinCode">
+              Create PIN code
+              <small> create your account Pin code</small>
+            </h2>
+          </div>
+          <form (ngSubmit)="onChangePinCode(f)" #f="ngForm" novalidate class="changePinCodeForm">
+            <div class="box-body">
+              <div class="personal-info-right">
+                <div class="form-group row" *ngIf="userProfileModel.havePinCode">
+                  <label class="col-lg-3 col-form-label text-right align-self-center">
+                    Current Pin Code
+                  </label>
+                  <div class="col-lg-4">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="fas fa-key"></i>
+                        </span>
+                      </div>
+                      <input type="password" class="form-control" name="oldPinCode" placeholder="Current password"
+                        maxlength="6" [(ngModel)]="changePinCodeModel.oldPinCode" #oldPinCode="ngModel" required
+                        autocomplete="off">
+                      <div class="error"
+                        *ngIf="oldPinCode.invalid && (oldPinCode.dirty || oldPinCode.touched || f.submitted)">
+                        <div *ngIf="oldPinCode.errors?.required">This is required field</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label text-right align-self-center">
+                    New Pin Code
+                  </label>
+                  <div class="col-lg-4">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="fas fa-key"></i>
+                        </span>
+                      </div>
+                      <input type="password" class="form-control" placeholder="New pin code" name="newPinCode"
+                        maxlength="6" pattern="^(\d{6})$" validateEqual="confirmPinCodeChange" reverse="true"
+                        [(ngModel)]="changePinCodeModel.newPinCode" #newPinCode="ngModel" required autocomplete="off">
+                      <div class="error"
+                        *ngIf="newPinCode.invalid && (newPinCode.dirty || newPinCode.touched || f.submitted)">
+                        <div *ngIf="newPinCode.errors?.required">This is required field</div>
+                        <div *ngIf="newPinCode.errors?.pattern">Pin code have 6 number</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label text-right align-self-center">
+                    Verify Pin Code
+                  </label>
+                  <div class="col-lg-4">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="fas fa-key"></i>
+                        </span>
+                      </div>
+                      <input type="password" class="form-control" placeholder="Confirm pin code" reverse="false"
+                        maxlength="6" name="confirmPinCode" [(ngModel)]="changePinCodeModel.newPinCodeConfirm"
+                        #confirmPinCodeChange="ngModel" validateEqual="newPinCode" required autocomplete="off">
+                      <div
+                        *ngIf="confirmPinCodeChange.invalid && (confirmPinCodeChange.dirty || confirmPinCodeChange.touched || f.submitted)"
+                        class="error">
+                        <div *ngIf="confirmPinCodeChange.errors?.required">This is required field</div>
+                        <div *ngIf="confirmPinCodeChange.value && confirmPinCodeChange.errors?.validateEqual">
+                          Pin Code mismatch
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-md-3 col-lg-3">
+                </div>
+                <div class="col-md-9 col-lg-9">
+                  <button mat-raised-button color="primary" class="mr-2"><span *ngIf="userProfileModel.havePinCode">
+                      Change PIN code</span><span *ngIf="!userProfileModel.havePinCode"> Create PIN code</span></button>
+                  <a mat-raised-button color="warn" class="mr-2 remove-button" data-toggle="modal"
+                    data-backdrop="static" data-keyboard="false" data-target="#confirmModal"
+                    (click)="onConfirmPassword(f)" *ngIf="userProfileModel.havePinCode">Remove PIN code</a>
+                  <a mat-raised-button (click)="onCancel()">Cancel</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<confirm-password-modal *ngIf="isConfirmPassword" [visible]="isConfirmPassword"
+  (onRemoveConfirm)="onRemoveConfirm($event)" [header]="'Confirm'" [content]="'Are you sure want to delete?'">
+</confirm-password-modal>

@@ -1,0 +1,193 @@
+$widthCommon: 200px;
+$heightHeaderContent: 102px;
+$width4Cell: 122px;
+$height4Cell: 70px;
+$borderStyle: 1px black solid;
+$squareEdge: 25px;
+
+$colorProgress: #99700a;
+$colorCompleted: #0e6829;
+$colorOverdue: #a10d00;
+$bgProgress: rgba(253, 197, 28, 0.4);
+$bgCompleted: rgba(44, 185, 9, 0.4);
+$bgOverdue: rgba(232, 56, 56, 0.4);
+
+.progress-text {
+  color: $colorProgress;
+  background-color: $bgProgress;
+}
+
+.completed-text {
+  color: $colorCompleted;
+  background-color: $bgCompleted;
+}
+
+.overdue-text {
+  color: $colorOverdue;
+  background-color: $bgOverdue;
+}
+
+.content {
+  margin-top: 20px;
+  min-height: 500px;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 10px;
+  position: relative;
+
+  & > .legend {
+    position: absolute;
+    top: 0;
+    // width: 200px;
+
+    & > .title {
+      display: flex;
+      flex-direction: column;
+      // width: $widthCommon;
+
+      & .square {
+        width: $squareEdge;
+        height: $squareEdge;
+        margin: 5px;
+      }
+
+      & > div {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        min-height: 2rem;
+        border: $borderStyle;
+        border-top: none;
+        border-bottom: none;
+        padding-right: 10px;
+        font-size: 14px;
+
+        &:first-child {
+          border-top: $borderStyle;
+        }
+
+        &:last-child {
+          border-bottom: $borderStyle;
+        }
+      }
+    }
+  }
+
+  & > .scroll-content {
+    width: calc(100% - 200px);
+    display: flex;
+    align-items: flex-end;
+
+    /*---Scroll Bar---*/
+    &::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #b6b6b6;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #6d6e70;
+    }
+  }
+
+  & > .scroll-content.handle-scrollbar {
+    overflow-x: auto;
+    bottom: -10px;
+    position: relative;
+  }
+
+  & > .scroll-content.remove-handle-scrollbar {
+    overflow-x: hidden;
+    bottom: 0;
+  }
+
+  & > div:first-child {
+    display: flex;
+    flex-direction: column;
+    width: $widthCommon;
+    text-align: center;
+    // border-right: $borderStyle;
+
+    & > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 2rem;
+      border-bottom: $borderStyle;
+      border-left: $borderStyle;
+
+      &:first-child {
+        border-top: $borderStyle;
+      }
+    }
+  }
+
+  .render-column {
+    display: flex;
+    flex-direction: column-reverse;
+
+    &:first-child {
+      .header-column {
+        border-left: $borderStyle;
+      }
+    }
+
+    .header-column {
+      display: flex;
+      flex-direction: column;
+      border-right: $borderStyle;
+      min-width: $width4Cell;
+      // height: $heightHeaderContent;
+
+      & > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 2rem;
+        border-bottom: $borderStyle;
+
+        &:first-child {
+          border-top: $borderStyle;
+        }
+      }
+    }
+
+    & > .body-column {
+      display: flex;
+
+      & .column {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        margin: 10px;
+        margin-top: unset;
+
+        & > .ceil-column {
+          display: flex;
+          flex-direction: column;
+          min-width: $width4Cell;
+          height: $height4Cell;
+          padding: 8px 0;
+          text-align: center;
+          border: $borderStyle;
+          border-bottom: none;
+          font-size: 15px;
+
+          &:last-child {
+            border-bottom: $borderStyle;
+          }
+        }
+
+        &:first-child .ceil-column {
+          border-left: $borderStyle;
+        }
+      }
+    }
+  }
+
+  & > .render-column:last-child .header-column {
+    border-right: $borderStyle;
+  }
+}

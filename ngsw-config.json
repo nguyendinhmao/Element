@@ -1,0 +1,49 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "element",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/pwa-manifest.json",
+          "/*.css",
+          "/*.js"
+        ]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/*",
+          "/assets/(library|img|images|icons|css|fonts)/**",
+          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+        ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "element-api",
+      "urls": [
+        "http://localhost:56532",
+        "https://elements-dev-api.bmbsoft.com.vn:9993",
+        "https://elements-test-api.bmbsoft.com.vn:9998",
+        "https://api.elements-hub.com"
+      ],
+      "version": 1,
+      "cacheConfig": {
+        "maxSize": 1000,
+        "maxAge": "2h",
+        "timeout": "40s",
+        "strategy": "freshness"
+      }
+    }
+  ]
+}

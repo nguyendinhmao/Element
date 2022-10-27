@@ -1,0 +1,190 @@
+.pres-title-pause-stop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pres-pause-stop-in-cell {
+  display: flex;
+  align-items: center;
+}
+
+.pres-block-icon {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  i {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &:hover {
+    // box-shadow: 0px 0px 11px 1px #888888;
+    transform: scale(1.2);
+    transition: all 0.2s ease;
+  }
+}
+
+.pres-pause-icon {
+  background: #28a745;
+}
+
+.pres-stop-icon {
+  margin-left: 8px;
+  background: #6c757d;
+  border-width: 1px;
+}
+
+//--- for preservation allocation
+.mat-column-pauseOrStop {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 6% !important;
+  width: 6% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-selectPresAll {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 3% !important;
+  width: 3% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-noOfAssociatedTagsPresAll {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 13% !important;
+  width: 13% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+//--- for detail preservation tab
+.mat-column-drawingEntry,
+.mat-column-equimentTypePresTab {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 10% !important;
+  width: 10% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-selectPres {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 3% !important;
+  width: 3% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-imagesPres {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 6% !important;
+  width: 6% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+// .mat-column-signaturePres,
+// .mat-column-frequencyPres,
+// .mat-column-typePres {
+//     word-wrap: break-word !important;
+//     white-space: unset !important;
+//     flex: 0 0 9% !important;
+//     width: 9% !important;
+//     overflow-wrap: break-word;
+//     word-wrap: break-word;
+
+//     word-break: break-word;
+
+//     -ms-hyphens: auto;
+//     -moz-hyphens: auto;
+//     -webkit-hyphens: auto;
+//     hyphens: auto;
+// }
+
+// .mat-column-statusPres,
+// .mat-column-pauseOrStopPres,
+// .mat-column-dateDuePres,
+// .mat-column-dateCompletePres {
+//     word-wrap: break-word !important;
+//     white-space: unset !important;
+//     flex: 0 0 9% !important;
+//     width: 9% !important;
+//     overflow-wrap: break-word;
+//     word-wrap: break-word;
+
+//     word-break: break-word;
+
+//     -ms-hyphens: auto;
+//     -moz-hyphens: auto;
+//     -webkit-hyphens: auto;
+//     hyphens: auto;
+// }
+
+.tagNo-pres-item {
+  cursor: pointer;
+  color: #007bff;
+  &:hover {
+    color: #0056b3;
+  }
+}
