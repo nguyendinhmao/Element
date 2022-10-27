@@ -1,0 +1,250 @@
+<div class="container-fluid">
+  <div class="row">
+    <app-title class="col-12 d-flex" [title]="'Personal Information'"></app-title>
+
+    <div class="col-md-12 col-lg-3 mt-3">
+      <div class="box has-shadow">
+        <div class="box-body">
+          <div class="personal-info-left">
+            <div class="personal-info-head">
+              <!-- <div class="personal-info-avatar">
+                <img src="{{personalLogoUrl}}" alt="image">
+              </div> -->
+              <div class="personal-info-content">
+                <div class="personal-info-section">
+                  <a class="personal-info-username">
+                    {{userProfileModel.firstName}} {{userProfileModel.surname}}
+                  </a>
+                  <span class="personal-info-subtitle">
+                    Administrator
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="personal-info-body">
+              <div class="personal-info-content">
+                <div class="personal-info-info">
+                  <span class="personal-info-label">Email:</span>
+                  <a href="#" class="personal-info-data">{{userProfileModel.email}}</a>
+                </div>
+                <!-- <div class="personal-info-info">
+                  <span class="personal-info-label">Phone:</span>
+                  <a href="#" class="personal-info-data">{{userProfileModel.phoneNumber}}</a>
+                </div> -->
+              </div>
+              <div class="personal-info-items">
+                <a class="active" [routerLink]="['', 'personal-information']">
+                  <i class="fas fa-user mr-2"></i>
+                  Personal Information
+                </a>
+                <a [routerLink]="['', 'change-password']">
+                  <i class="fas fa-key mr-2"></i> Change password
+                </a>
+                <a [routerLink]="['', 'change-pincode']">
+                  <i class="fas fa-key mr-2"></i> <span *ngIf="userProfileModel.havePinCode"> Change PIN
+                    code</span><span *ngIf="!userProfileModel.havePinCode"> Create PIN code</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9 col-lg-9 mt-3">
+      <div class="box has-shadow w-100">
+        <div class="box-header bordered d-flex align-items-center">
+          <h2>Personal Information</h2>
+        </div>
+        <form (ngSubmit)="onUpdateProfile(f)" #f="ngForm" novalidate enctype="multipart/form-data">
+          <div class="box-body">
+            <div class="personal-info-right">
+              <div class="row mb-3">
+                <label class="col-lg-3"></label>
+                <div class="col-lg-6">
+                  <h6>Customer Info:</h6>
+                </div>
+              </div>
+              <!-- <div class="form-group row">
+                <label class="col-lg-3 col-form-label text-right">Avatar</label>
+                <div class="col-lg-6">
+                  <div class="personal-logo">
+                    <div class="personal-logo-holder">
+                      <img src="{{newLogoImage || personalLogoUrl}}" alt="Personal Logo" class="img-fluid">
+                    </div>
+                    <label class="personal-logo-upload">
+                      <i class="fas fa-pencil-alt"></i>
+                      <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg"
+                        (change)="onSelectPersonalLogo($event)">
+                    </label>
+                    <span class="personal-logo-cancel" [ngClass]="{show : isPersonalLogoExist}"
+                      (click)="onCancelPersonalLogo()">
+                      <i class="fas fa-times"></i>
+                    </span>
+                  </div>
+                </div>
+              </div> -->
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label text-right align-self-center">
+                  First Name<span class="required"></span>
+                </label>
+                <div class="col-lg-4">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-user"></i>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" name="firstName" #firstName="ngModel"
+                      [(ngModel)]="userProfileUpdationModel.firstName" required autocomplete="off">
+                    <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched || f.submitted)"
+                      class="error">
+                      <div *ngIf="firstName.errors?.required">This field is required</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label text-right align-self-center">
+                  Last Name<span class="required"></span>
+                </label>
+                <div class="col-lg-4">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-user"></i>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" name="surName" #surName="ngModel"
+                      [(ngModel)]="userProfileUpdationModel.surname" required autocomplete="off">
+                    <div *ngIf="surName.invalid && (surName.dirty || surName.touched || f.submitted)" class="error">
+                      <div *ngIf="surName.errors?.required">This field is required</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label text-right align-self-center">
+                  User Name<span class="required"></span>
+                </label>
+                <div class="col-lg-4">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-user"></i>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" name="userName" #surName="ngModel"
+                      [(ngModel)]="userProfileUpdationModel.userName" required autocomplete="off" disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <label class="col-lg-3"></label>
+                <div class="col-lg-6">
+                  <h6>Contact Info:</h6>
+                </div>
+              </div>
+
+              <!-- <div class="form-group row">
+                <label class="col-lg-3 col-form-label text-right align-self-center">
+                  Contact Phone<span class="required"></span>
+                </label>
+                <div class="col-lg-4">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-phone"></i>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" name="phoneNumber" #phoneNumber="ngModel"
+                      [(ngModel)]="userProfileUpdationModel.phoneNumber" required autocomplete="off">
+                    <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched || f.submitted)"
+                      class="error">
+                      <div *ngIf="phoneNumber.errors?.required">This field is required</div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label text-right align-self-center">
+                  Email Address<span class="required"></span>
+                </label>
+                <div class="col-lg-4">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-at"></i>
+                      </span>
+                    </div>
+                    <input class="form-control" type="text" name="email" [(ngModel)]="userProfileUpdationModel.email"
+                      #email="ngModel" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" required
+                      autocomplete="off">
+                    <div *ngIf="email.invalid && (email.dirty || email.touched || f.submitted)" class="error">
+                      <div *ngIf="email.errors?.required">This field is required</div>
+                      <div *ngIf="email.errors?.pattern">Email format should be <i>john@doe.com</i></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <label class="col-lg-3"></label>
+                <div class="col-lg-6">
+                  <h6>Default Module & Project:</h6>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label text-right align-self-center">
+                  Module
+                </label>
+                <div class="col-lg-4">
+                  <select class="form-control" name="moduleUser" [(ngModel)]="userProfileModel.moduleId"
+                    #moduleUser="ngModel" (change)="onGetProjectByUserAndModule(userProfileModel.moduleId)">
+                    <option [ngValue]="null">Select module</option>
+                    <option *ngFor="let item of moduleModels" [value]="item.id">{{item.value}}</option>
+                  </select>
+                  <div *ngIf="moduleUser.invalid && (moduleUser.dirty || moduleUser.touched || f.submitted)"
+                    class="error">
+                    <div *ngIf="moduleUser.errors?.required">This field is required</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label text-right align-self-center">
+                  Project<span class="required" *ngIf="projectByUserAndModuleModels.length > 0"></span>
+                </label>
+                <div class="col-lg-4">
+                  <select class="form-control" name="projectUser"
+                    [(ngModel)]="userProfileUpdationModel.defaultProjectId" #projectUser="ngModel"
+                    [required]="projectByUserAndModuleModels.length > 0">
+                    <option [ngValue]="null" disabled selected>Select project</option>
+                    <option *ngFor="let item of projectByUserAndModuleModels" [value]="item.projectId">
+                      {{item.projectName}}
+                    </option>
+                  </select>
+                  <div *ngIf="projectUser.invalid && (projectUser.dirty || projectUser.touched || f.submitted)"
+                    class="error">
+                    <div *ngIf="projectUser.errors?.required">This field is required</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-md-3 col-lg-3">
+              </div>
+              <div class="col-md-9 col-lg-9">
+                <button mat-raised-button color="primary" class="mr-2">Submit</button>
+                <a mat-raised-button (click)="onCancel()">Cancel</a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

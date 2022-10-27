@@ -1,0 +1,10 @@
+<div (click)="onSelectedSymbol(null)" class="container-symbol-modal d-none">
+  <div class="d-flex select-symbol-modal" *ngIf="listSymbol">
+    <div *ngFor="let symbol of listSymbol" (click)="onSelectedSymbol(symbol)" class="symbol-of-list">
+      {{ symbol }}
+    </div>
+    <div *ngIf="listSymbol.length===0" class="waring-no-data">
+      No Data to display
+    </div>
+  </div>
+</div>

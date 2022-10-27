@@ -1,0 +1,48 @@
+<div class="modal fade" id="justificationPresTabModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content has-shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form (ngSubmit)="onSubmitData(f)" #f="ngForm" novalidate>
+                <div class="modal-body">
+                    <div *ngIf="!isRequireSetDD && !isSetDateDue" class="text-center">
+                        {{jQuestionContent}}
+                        <span *ngIf="!isRequireSetDD && (status === 'PAUSED' || status === 'RESUME')" class="set-date-btn" (click)="onSetDateDue()">Click Here!</span>
+                    </div>
+
+                    <div *ngIf="status !== 'PAUSED' && status !== 'RESUME'" class="form-group">
+                        <label>Reason: <span class="required"></span></label>
+                        <textarea class="form-control" name="reasonContent" #reason="ngModel"
+                            [(ngModel)]="reasonContent" required autocomplete="off"></textarea>
+                        <div *ngIf="reason.invalid && (reason.dirty || reason.touched || f.submitted)" class="error">
+                            <div *ngIf="reason.errors?.required">This field is required.</div>
+                        </div>
+                    </div>
+                    <div *ngIf="isSetDateDue || isRequireSetDD">
+                        <div>
+                            <mat-form-field class="mt-0 w-100">
+                                <mat-label>Set date due</mat-label>
+                                <input matInput [matDatepicker]="dtsDateDue" name="dateStartPlanned" #dateDue="ngModel"
+                                    [(ngModel)]="dateDueContent" [matDatepickerFilter]="avoidPastDate" (focus)="dtsDateDue.open()" required>
+                                <mat-datepicker-toggle matSuffix [for]="dtsDateDue"></mat-datepicker-toggle>
+                                <mat-datepicker #dtsDateDue [opened]="isSetDateDue"></mat-datepicker>
+                                <mat-error *ngIf="dateDue.invalid && (dateDue.dirty || dateDue.touched || f.submitted)">
+                                    This field is required.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" mat-raised-button color="primary">Submit</button>
+                    <button type="button" mat-raised-button data-dismiss="modal" class="ml-3"
+                        (click)="onCancel()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

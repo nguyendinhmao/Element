@@ -1,0 +1,33 @@
+<div *ngIf="visible" class="modal fade" id="{{id}}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content has-shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">{{header}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="text-center">
+                    {{content}}
+                </div>
+
+                <div class="form-group mt-3">
+                    <label>Reason<span class="required"></span></label>
+                    <textarea rows="5" class="form-control" name="txtReason" [(ngModel)]="reasonText"
+                        #txtReason="ngModel" required></textarea>
+                    <div class="error" *ngIf="txtReason.invalid && (txtReason.dirty || txtReason.touched)">
+                        <div *ngIf="txtReason.errors?.required">This is required field</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button mat-raised-button color="warn" (click)="onConfirm()" data-dismiss="modal"
+                    class="mr-2">Save</button>
+                <a mat-raised-button data-dismiss="modal" (click)="onClose()">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="modal fade" id="fileUploadDrawingModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content has-shadow">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Upload File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row no-gutters">
+                    <div *ngIf="file" class="w-100">
+                        {{file.name}}
+                    </div>
+                    <div class="col-6 text-left position-relative  mt-2">
+                        <input type="file" class="form-control-file"
+                            accept=".docx,.doc,.pdf,.xlsx,.csv,.jpg,.png,.zip,.rar,.txt" (change)="onGetFile($event)">
+                        <button mat-raised-button type="button" color="primary">
+                            <i class="fas fa-upload mb-1 mr-1"></i> Choose File
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button mat-raised-button color="primary" (click)="onSaveImages()">Save</button>
+                <a mat-raised-button class="ml-2" (click)="onCancel()">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>

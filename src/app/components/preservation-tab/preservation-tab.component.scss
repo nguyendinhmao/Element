@@ -1,0 +1,29 @@
+.search-des {
+  height: 36px;
+  min-height: 36px;
+  font-size: 1rem !important;
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.tagNo-item {
+  color: #3071b8;
+
+  &:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+}
+
+//--- Low Resolution Tablets
+@media (min-width: 481px) and (max-width: 767px) and (orientation: portrait) {
+  .dropdown-search {
+    width: 94%;
+  }
+  .button-action-container {
+    text-align: left !important;
+    margin-top: 1rem !important;
+  }
+}

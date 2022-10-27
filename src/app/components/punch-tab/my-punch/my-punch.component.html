@@ -1,0 +1,56 @@
+<div class="container-fluid position-relative">
+  <div class="row no-gutters">
+    <div class="col-12">
+      <app-title class="float-left mr-2" [title]="'User Punch'"></app-title>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-12 mt-3">
+      <div class="box has-shadow w-100">
+        <div class="box-body">
+          <mat-tab-group (selectedTabChange)="onChangeTab($event)" [selectedIndex]="indexTab">
+            <mat-tab ariaLabel="Create" ariaLabelledby="Create">
+              <ng-template mat-tab-label>
+                <span *ngIf="punchCounter" matBadge={{punchCounter.unSubmittedPunches}} matBadgeOverlap="false"
+                  matBadgeColor="warn" [matBadgeHidden]="hiddenCreateBadge">Create</span>
+              </ng-template>
+
+              <init-punch [textLabel]="textLabel" [moduleKey]="moduleKey" [projectKey]="projectKey"
+                [isFirstLoad]="isInitLoadData" (onGetCounter)="onGetCounter($event)" [tagNo]="tagNo"
+                (onLoadingTab)="onLoadingTab($event)">
+              </init-punch>
+            </mat-tab>
+
+            <mat-tab *ngIf="onCheckPermission(permissionsViews.PUNCH_TAB_VIEW_TAB_APPROVE)" ariaLabel="Approve"
+              ariaLabelledby="Approve">
+              <ng-template mat-tab-label>
+                <span *ngIf="punchCounter" matBadge={{punchCounter.submittedPunches}} matBadgeOverlap="false"
+                  matBadgeColor="warn" [matBadgeHidden]="hiddenApproveBadge">Approve</span>
+              </ng-template>
+
+              <waiting-approve [textLabel]="textLabel" [moduleKey]="moduleKey" [projectKey]="projectKey"
+                [isFirstLoad]="isApproveLoadData" (onGetCounter)="onGetCounter($event)" [tagNo]="tagNo"
+                (onLoadingTab)="onLoadingTab($event)">
+              </waiting-approve>
+            </mat-tab>
+
+            <mat-tab ariaLabel="Sign-off" ariaLabelledby="Sign-off">
+              <ng-template mat-tab-label>
+                <span *ngIf="punchCounter" matBadge={{punchCounter.needMySignaturePunches}} matBadgeOverlap="false"
+                  matBadgeColor="warn" [matBadgeHidden]="hiddenSignOffBadge">Sign-off</span>
+              </ng-template>
+
+              <waiting-signatures [textLabel]="textLabel" [moduleKey]="moduleKey" [projectKey]="projectKey"
+                [isFirstLoad]="isSignatureLoadData" (onGetCounter)="onGetCounter($event)" [tagNo]="tagNo"
+                (onLoadingTab)="onLoadingTab($event)">
+              </waiting-signatures>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,20 @@
+.add-img-prestab {
+  cursor: pointer;
+  font-size: 24px;
+  text-align: center;
+  color: silver;
+  &:hover {
+    color: #615f5f;
+  }
+}
+.images-container {
+  width: 75px;
+}
+.drawing-file {
+  cursor: pointer;
+  color: #202020;
+  &:hover {
+    color: rgba(17, 45, 204, 0.911);
+    font-weight: 500;
+  }
+}

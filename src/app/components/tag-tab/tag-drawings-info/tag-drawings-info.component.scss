@@ -1,0 +1,72 @@
+.disable-a {
+  color: black;
+  a {
+    cursor: unset;
+  }
+}
+
+.enable-a {
+  color: #007bff;
+  &:hover {
+    color: #044d9b;
+    background-color: rgba(240, 240, 240, 0.829);
+  }
+}
+
+.prevent-scroll {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.overwrite-body-modal {
+  max-height: 45vh;
+}
+
+.wrapper-content {
+  height: auto;
+  max-height: 75vh;
+}
+
+.list-group {
+  .list-group-item {
+    &.list-group-header {
+      font-size: 15px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+}
+
+@media (min-width: 720px) and (max-width: 1024px) {
+  .custom-tag-drawing-modal {
+    max-width: 85%;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .custom-tag-drawing-modal {
+    max-width: 95%;
+    min-width: auto;
+  }
+}
+
+//--- Low Resolution Tablets
+@media (min-width: 481px) and (max-width: 767px) and (orientation: landscape) {
+  #tagDrawingsInfoModal {
+    .modal-dialog {
+      max-width: 90%;
+    }
+  }
+}
+
+//--- Tablet
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  #tagDrawingsInfoModal {
+    .modal-dialog {
+      max-width: 90%;
+    }
+  }
+}

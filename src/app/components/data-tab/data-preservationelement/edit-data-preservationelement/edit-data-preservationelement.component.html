@@ -1,0 +1,66 @@
+<div *ngIf="visible" class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content has-shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Edit Preservation Element</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form (ngSubmit)="onSaveData(f)" #f="ngForm" novalidate>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label>Element No. <span class="required"></span></label>
+            <input type="text" class="form-control" name="elementNo" #elementNo="ngModel"
+              [(ngModel)]="updationModel.elementNo" required autocomplete="off">
+            <div *ngIf="elementNo.invalid && (elementNo.dirty || elementNo.touched || f.submitted)" class="error">
+              <div *ngIf="elementNo.errors?.required">This field is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Task <span class="required"></span></label>
+            <input type="text" class="form-control" name="task" #task="ngModel" [(ngModel)]="updationModel.task"
+              required autocomplete="off">
+            <div *ngIf="task.invalid && (task.dirty || task.touched || f.submitted)" class="error">
+              <div *ngIf="task.errors?.required">This field is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Description <span class="required"></span></label>
+            <textarea class="form-control" rows="3" name="description" #description="ngModel"
+              [(ngModel)]="updationModel.description" required></textarea>
+            <div *ngIf="description.invalid && (description.dirty || description.touched || f.submitted)" class="error">
+              <div *ngIf="description.errors?.required">This field is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Type <span class="required"></span></label>
+            <select class="form-control" name="type" id="type" #type="ngModel" [(ngModel)]="updationModel.type"
+              required>
+              <option value="Initial">Initial</option>
+              <option value="Periodic">Periodic</option>
+            </select>
+          </div>
+          <div class="form-group" *ngIf="updationModel.type == 'Periodic'">
+            <label>Frequency In Weeks <span class="required"></span></label>
+            <input type="text" class="form-control" name="frequencyInWeeks" #frequencyInWeeks="ngModel"
+              [(ngModel)]="updationModel.frequencyInWeeks" required autocomplete="off">
+            <div *ngIf="frequencyInWeeks.invalid && (frequencyInWeeks.dirty || frequencyInWeeks.touched || f.submitted)"
+              class="error">
+              <div *ngIf="frequencyInWeeks.errors?.required">This field is required</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onCancel()">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

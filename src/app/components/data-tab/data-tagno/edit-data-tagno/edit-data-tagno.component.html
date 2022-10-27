@@ -1,0 +1,146 @@
+<div *ngIf="visible" class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content has-shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Edit Tag</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (ngSubmit)="onSaveData(f)" #f="ngForm" novalidate>
+        <div class="modal-body">
+          <div class="row ml-n1 mr-n1">
+            <div class="order-1 col-6 col-lg-4 form-group pl-1 pr-1">
+              <label>Tag No<span class="required"></span></label>
+              <input type="text" class="form-control" name="tagNo" #tagNo="ngModel" [(ngModel)]="updationModel.tagNo"
+                required autocomplete="off">
+              <div *ngIf="tagNo.invalid && (tagNo.dirty || tagNo.touched || f.submitted)" class="error">
+                <div *ngIf="tagNo.errors?.required">This field is required</div>
+              </div>
+            </div>
+
+            <div class="order-1 col-6 col-lg-8 form-group pl-1 pr-1">
+              <label>Description<span class="required"></span></label>
+              <input class="form-control" rows="3" name="tagName" #tagName="ngModel" [(ngModel)]="updationModel.tagName"
+                required>
+              <div *ngIf="tagName.invalid && (tagName.dirty || tagName.touched || f.submitted)" class="error">
+                <div *ngIf="tagName.errors?.required">This field is required</div>
+              </div>
+            </div>
+
+            <div class="order-1 col-6 col-lg-4 form-group pl-1 pr-1">
+              <label>
+                Equipment Type <span class="required"></span>
+              </label>
+              <ng-select name="equipment" [items]="equipmentLookUpModel" bindValue="id" bindLabel="value"
+                placeholder="Select Equipment Type" [(ngModel)]="updationModel.equipmentTypeId" #equipment="ngModel"
+                required>
+              </ng-select>
+              <div *ngIf="equipment.invalid && (equipment.dirty || equipment.touched || f.submitted)" class="error">
+                <div *ngIf="equipment.errors?.required">This field is required</div>
+              </div>
+            </div>
+
+            <div class="order-1 col-6 col-lg-4 form-group pl-1 pr-1">
+              <label>
+                Parent
+              </label>
+              <ng-select name="parent" [items]="tagLookupModels" bindValue="id" bindLabel="value"
+                placeholder="Select Parent" [(ngModel)]="updationModel.parent" #parent="ngModel">
+              </ng-select>
+            </div>
+
+            <div class="order-1 col-6 col-lg-4 form-group pl-1 pr-1">
+              <label>Tag Type</label>
+              <ng-select name="tagType" [items]="dataTagTypeModels" bindValue="key" bindLabel="value"
+                placeholder="Select Tag Type" [(ngModel)]="updationModel.tagType" #tagType="ngModel">
+              </ng-select>
+            </div>
+
+            <div class="order-1 col-6 col-lg-4 form-group pl-1 pr-1">
+              <label>Discipline:</label>
+              <ng-select name="discipline" [items]="disciplineModels" bindValue="id" bindLabel="value"
+                [(ngModel)]="updationModel.disciplineId" placeholder="Select Discipline" #discipline="ngModel">
+              </ng-select>
+            </div>
+
+            <div class="order-1 col-6 col-lg-4 form-group pl-1 pr-1">
+              <label>
+                WorkPack
+              </label>
+              <ng-select name="workPack" [items]="workPackLookUpModels" bindValue="id" bindLabel="value"
+                placeholder="Select WorkPack No" [(ngModel)]="updationModel.workPackId" #workPack="ngModel">
+              </ng-select>
+            </div>
+
+            <div class="order-1 col-6 col-lg-4 form-group pl-1 pr-1">
+              <label>
+                Location
+              </label>
+              <ng-select name="location" [items]="locationLookUpModels" bindValue="id" bindLabel="value"
+                placeholder="Select Location Code" [(ngModel)]="updationModel.locationId" #location="ngModel">
+              </ng-select>
+            </div>
+
+            <div class="order-1 col-6 col-lg-4 form-group pl-1 pr-1">
+              <label>
+                System <span class="required"></span>
+              </label>
+              <ng-select name="system" [items]="systemModels" bindValue="id" bindLabel="value"
+                placeholder="Select System No" [(ngModel)]="updationModel.systemId"
+                (change)="onGetSubSystemBySystem($event)" #system="ngModel" required>
+              </ng-select>
+              <div *ngIf="system.invalid && (system.dirty || system.touched || f.submitted)" class="error">
+                <div *ngIf="system.errors?.required">This field is required</div>
+              </div>
+            </div>
+
+            <div class="order-1 col-6 col-lg-4 form-group pl-1 pr-1">
+              <label>
+                SubSystem
+              </label>
+              <ng-select name="subSystem" [items]="subSystemLookUpModels" bindValue="id" bindLabel="value"
+                placeholder="Select SusSystem No" [(ngModel)]="updationModel.subSystemId" #subSystem="ngModel">
+              </ng-select>
+            </div>
+
+            <div class="order-1 col-6 col-lg-4 form-group pl-1 pr-1">
+              <label>Active<span class="required"></span></label>
+              <select class="form-control" name="active" id="active" #complete="ngModel"
+                [(ngModel)]="updationModel.status" required>
+                <option value="true">Active</option>
+                <option value="false">InActive</option>
+              </select>
+              <div *ngIf="complete.invalid && (complete.dirty || complete.touched || f.submitted)" class="error">
+                <div *ngIf="complete.errors?.required">This field is required</div>
+              </div>
+            </div>
+            <div class="order-6 col-sm-12 col-lg-12 form-group pl-1 pr-1">
+              <label>Drawings <span class="required"></span></label>
+              <ng-select name="drawing" [items]="drawingTempModels" [multiple]="true" bindValue="id" bindLabel="value"
+                placeholder="Select drawing" #drawing="ngModel" [(ngModel)]="updationModel.drawingIds"
+                [dropdownPosition]="'top'" [closeOnSelect]="false" required>
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                  <span class="ng-value-label">{{item.value}}</span>
+                  <span class="ng-value-icon right" (click)="onClearDrawingSelect(item)">×</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                  <div class="d-flex align-items-center justify-content-between align-items-center">
+                    <span>{{item.value}}</span>
+                  </div>
+                </ng-template>
+              </ng-select>
+              <div *ngIf="drawing.invalid && (drawing.dirty || drawing.touched || f.submitted)" class="error">
+                <div *ngIf="drawing.errors?.required">This field is required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onCancel()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

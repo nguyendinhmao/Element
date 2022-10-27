@@ -1,0 +1,114 @@
+<div class="modal fade" id="addNewModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content has-shadow">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Add Change</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form (ngSubmit)="onSubmit(f)" #f="ngForm" novalidate>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 form-group">
+              <label>Title: <span class="required"></span></label>
+              <input type="text" name="title" class="form-control" #title="ngModel" placeholder="Title"
+                [(ngModel)]="createChangeItemModel.title" autocomplete="off" required />
+              <div *ngIf="title.invalid && (title.dirty || title.touched || f.submitted)" class="error">
+                <div *ngIf="title.errors?.required">This field is required</div>
+              </div>
+            </div>
+            <div class="col-6 form-group">
+              <label>Type: <span class="required"></span></label>
+              <ng-select name="type" [items]="changeTypeTempLookupModel" bindValue="id" bindLabel="value" required
+                placeholder="Select type" #type="ngModel" [(ngModel)]="createChangeItemModel.changeTypeId"
+                appendTo="body" [virtualScroll]="true" [loading]="loadingSelection.isLoadingType"
+                (scrollToEnd)="onScrollToEndSelect(selectionControlName.type)"
+                (search)="onSearchSelect($event, selectionControlName.type)"
+                (clear)="onClearSelect(selectionControlName.type)" (change)="onChangeTypeSelected($event)">
+              </ng-select>
+              <div *ngIf="type.invalid && (type.dirty || type.touched || f.submitted)" class="error">
+                <div *ngIf="type.errors?.required">This field is required</div>
+              </div>
+            </div>
+            <div class="col-6 form-group" *ngIf="!specialType">
+              <label>Discipline:</label>
+              <ng-select name="discipline" [items]="disciplineTempModels" bindValue="id" [multiple]="true"
+                bindLabel="value" placeholder="Select discipline" #discipline="ngModel"
+                [(ngModel)]="createChangeItemModel.disciplineIds" appendTo="body" [virtualScroll]="true"
+                [loading]="loadingSelection.isLoadingDiscipline"
+                (scrollToEnd)="onScrollToEndSelect(selectionControlName.discipline)"
+                (search)="onSearchSelect($event, selectionControlName.discipline)"
+                (clear)="onClearSelect(selectionControlName.discipline)">
+              </ng-select>
+            </div>
+            <div class="col-6 form-group">
+              <label>System: <span class="required"></span></label>
+              <ng-select name="system" [items]="systemTempModels" bindValue="id" [multiple]="true" bindLabel="value" required
+                placeholder="Select system" #system="ngModel" [(ngModel)]="createChangeItemModel.systemIds"
+                appendTo="body" [virtualScroll]="true" [loading]="loadingSelection.isLoadingSystem"
+                (scrollToEnd)="onScrollToEndSelect(selectionControlName.system)"
+                (search)="onSearchSelect($event, selectionControlName.system)"
+                (clear)="onClearSelect(selectionControlName.system)">
+              </ng-select>
+              <div *ngIf="system.invalid && (system.dirty || system.touched || f.submitted)" class="error">
+                <div *ngIf="system.errors?.required">This field is required</div>
+              </div>
+            </div>
+
+            <div class="col-6 form-group">
+              <label>Sub-system: <span class="required"></span></label>
+              <ng-select name="subSystem" [items]="subSystemTempModels" bindValue="id" [multiple]="true" required
+                bindLabel="value" placeholder="Select sub-system" #subSystem="ngModel"
+                [(ngModel)]="createChangeItemModel.subSystemIds" appendTo="body" [virtualScroll]="true"
+                [loading]="loadingSelection.isLoadingSubSystem"
+                (scrollToEnd)="onScrollToEndSelect(selectionControlName.subSystem)"
+                (search)="onSearchSelect($event, selectionControlName.subSystem)"
+                (clear)="onClearSelect(selectionControlName.subSystem)" [disabled]="lookSubSystem">
+              </ng-select>
+              <div *ngIf="subSystem.invalid && (subSystem.dirty || subSystem.touched || f.submitted)" class="error">
+                <div *ngIf="subSystem.errors?.required">This field is required</div>
+              </div>
+            </div>
+            <div class="col-12 form-group">
+              <label>Description: <span class="required"></span></label>
+              <textarea name="description" rows="3" placeholder="Enter description" class="form-control"
+                #description="ngModel" [(ngModel)]="createChangeItemModel.description" required></textarea>
+              <div *ngIf="description.invalid && (description.dirty || description.touched || f.submitted)" class="error">
+                <div *ngIf="description.errors?.required">This field is required</div>
+              </div>
+            </div>
+            <div class="col-12 form-group" *ngIf="!specialType">
+              <label>Justification: <span class="required"></span></label>
+              <!-- //<input type="text" name="justification" class="form-control" placeholder="Justification" [(ngModel)]="createChangeItemModel.justification" #justification="ngModel"> -->
+              <textarea name="justification" rows="3" placeholder="Enter Justification" class="form-control"
+                #justification="ngModel" [(ngModel)]="createChangeItemModel.justification" required></textarea>
+              <div *ngIf="justification.invalid && (justification.dirty || justification.touched || f.submitted)" class="error">
+                <div *ngIf="justification.errors?.required">This field is required</div>
+              </div>
+            </div>
+
+            <div class="col-12 form-group" *ngIf="!specialType">
+              <label>Proposed Solution: <span class="required"></span></label>
+              <textarea name="proposedSolution" rows="3" placeholder="Enter Proposed Solution" class="form-control"
+                #proposedSolution="ngModel" [(ngModel)]="createChangeItemModel.proposedSolution" required></textarea>
+              <div *ngIf="proposedSolution.invalid && (proposedSolution.dirty || proposedSolution.touched || f.submitted)" class="error">
+                <div *ngIf="proposedSolution.errors?.required">This field is required</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button mat-raised-button type="button" color="info" class="mr-2" (click)="onSaveAsDraft()">Save</button>
+          <button mat-raised-button type="submit" color="primary" class="mr-2">Submit</button>
+          <a mat-raised-button data-dismiss="modal" (click)="onCancel()">Cancel</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

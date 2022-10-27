@@ -1,0 +1,35 @@
+.link-another-sign{
+    color: #007bff;
+    cursor: pointer;
+    font-style: italic;
+    text-decoration: underline;;
+    &:hover{
+        color: #0056b3;
+    }
+}
+
+.separate-div {
+    padding: 5px 0px;
+    position: relative;
+    text-align: center;
+    width: 120px;
+    &::before{
+        content: "";
+        background: rgba(201, 198, 197, 0.8);
+        height: 1px;
+        position: absolute;
+        width: 100%;
+        top: 18px;
+        left: 0px;
+    };
+    h5{
+        font-size: 14px;
+        text-align: center;
+        font-weight: normal;
+        margin: 0px;
+        position: relative;
+        display: inline-block;
+        background: #ffffff;
+        padding: 0px 5px;
+    };
+}

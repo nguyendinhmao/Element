@@ -1,0 +1,54 @@
+<div class="container-fluid position-relative">
+  <div class="row no-gutters">
+    <div class="col-12">
+      <app-title class="float-left mr-2" [title]="'User Change'"></app-title>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 mt-3">
+      <div class="box has-shadow w-100">
+        <div class="box-body">
+          <mat-tab-group (selectedTabChange)="onChangeTab($event)" [selectedIndex]="indexTab">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span *ngIf="changeCounter" matBadge={{changeCounter.unSubmittedChanges}} matBadgeOverlap="false"
+                  matBadgeColor="warn" [matBadgeHidden]="hiddenUpdateBadge">Update</span>
+              </ng-template>
+
+              <init-change [textLabel]="textLabel" [moduleKey]="moduleKey" [projectKey]="projectKey"
+                [isFirstLoad]="isInitLoadData" (onGetCounter)="onGetCounter($event)"
+                (onLoadingTab)="onLoadingTab($event)">
+              </init-change>
+            </mat-tab>
+
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span *ngIf="changeCounter" matBadge={{changeCounter.submittedChanges}} matBadgeOverlap="false"
+                  matBadgeColor="warn" [matBadgeHidden]="hiddenApproveBadge">Approve</span>
+              </ng-template>
+
+              <waiting-approve-change [textLabel]="textLabel" [moduleKey]="moduleKey" [projectKey]="projectKey"
+                [isFirstLoad]="isApproveLoadData" (onGetCounter)="onGetCounter($event)"
+                (onLoadingTab)="onLoadingTab($event)">
+              </waiting-approve-change>
+            </mat-tab>
+
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span *ngIf="changeCounter" matBadge={{changeCounter.needMySignatureChanges}} matBadgeOverlap="false"
+                  matBadgeColor="warn" [matBadgeHidden]="hiddenSignOffBadge">Sign-off</span>
+              </ng-template>
+
+              <waiting-signatures-change [textLabel]="textLabel" [moduleKey]="moduleKey" [projectKey]="projectKey"
+                [isFirstLoad]="isSignatureLoadData" (onGetCounter)="onGetCounter($event)"
+                (onLoadingTab)="onLoadingTab($event)">
+              </waiting-signatures-change>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

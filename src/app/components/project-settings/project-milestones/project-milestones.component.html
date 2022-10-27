@@ -1,0 +1,46 @@
+<form (ngSubmit)="onSaveData(f)" #f="ngForm" novalidate>
+  <div class="milestone" #milestone>
+    <div class="milestone-item">
+      <div *ngFor="let project of projectMilestoneList; let i = index">
+        <div *ngIf="!project.isDeleted">
+          <div class="form-group">
+            <div class="row align-items-center pl-5 pr-5">
+              <div class="col-md-10 col-lg-10">
+                <ng-select appendTo="body" dropdownPosition="auto" name="{{i.toString()}}" [items]="milestoneModels"
+                  [clearable]="false" bindValue="id" bindLabel="value" (change)="onUpdateProjectMilestone(i, project)"
+                  placeholder="Choose Milestone" #milestone="ngModel" [(ngModel)]="project.milestoneId">
+                </ng-select>
+              </div>
+              <div class="col-md-2 col-lg-2">
+                <button type="button" class="close float-left" aria-label="Delete" (click)="removeMilestoneModel(i, project)">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row align-items-center pl-5 pr-5">
+    <div class="col-12">
+      <button mat-raised-button color="success" type="button" (click)="addMilestoneModel()">
+        <i class="fas fa-plus mb-1 mr-1"></i> Add Milestone
+      </button>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="text-center align-items-center">
+      <button type="submit" mat-raised-button color="primary" class="mr-2">
+        <i class="fas fa-save mb-1 mr-1"></i> Save
+      </button>
+      <a mat-raised-button type="reset" (click)="onResetMilestone()">
+        <i class="fas fa-redo mr-1"></i> Reset
+      </a>
+    </div>
+  </div>
+</form>

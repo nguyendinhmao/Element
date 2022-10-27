@@ -1,0 +1,42 @@
+<div class="modal fade" id="allocatedInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content has-shadow">
+      <div class="modal-header">
+        <h5 class="modal-title">{{allocatedHeader}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group" *ngIf="handoverLookUpModels && handoverLookUpModels.length > 0">
+          <li class="list-group-item" *ngFor="let item of handoverLookUpModels">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="col p-0 mr-2 text-truncate" matTooltip="{{item.description}}" matTooltipPosition="below">
+                <span>{{item.name}}</span>
+                <span *ngIf="item.description"> - {{item.description}}</span>
+              </div>
+              <div>
+                <span class="badge p-2" [ngClass]="{
+                  'badge-success':item.status=='Completed'||item.status=='Done', 
+                  'badge-info': item.status=='Approved',
+                  'badge-warning': item.status=='Waiting' || item.status=='Submitted' || item.status=='Rejected',
+                  'badge-danger':item.status=='Deleted',
+                  'badge-primary':item.status=='Inprogress',
+                  'badge-secondary':item.status=='Draft' || item.status=='Closed' || item.status=='NotStarted'}">
+                  {{item.status}}
+                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <h6 *ngIf="handoverLookUpModels && handoverLookUpModels.length <= 0"
+          class="text-center mb-0 text-danger font-weight-normal">
+          There is no item!
+        </h6>
+      </div>
+      <div class="modal-footer">
+        <a mat-raised-button data-dismiss="modal" (click)="onCancel()">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>

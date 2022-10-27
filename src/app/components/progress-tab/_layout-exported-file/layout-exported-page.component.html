@@ -1,0 +1,58 @@
+<div class="preview-layout">
+  <div class="header">
+    <div class="text-always-middle p-2">
+      <img class="h-100 w-100 object-fit-contain"
+        [src]="layoutReportModel&&layoutReportModel.projectLogo?prefix + layoutReportModel.projectLogo:'//:0'"
+        onerror="this.style.display='none'" alt="projectLogo" />
+    </div>
+    <div class="col text-always-middle header-title">
+      <img [src]="layoutReportModel&&layoutReportModel.eaiLogo?prefix + layoutReportModel.eaiLogo:'//:0'"
+        onerror="this.style.display='none'" alt="eaiLogo" class="eai-logo" />
+      <h1>{{layoutReportModel&&layoutReportModel.titleReport?layoutReportModel.titleReport:''}}</h1>
+    </div>
+    <div class="text-always-middle p-2">
+      <img class="h-100 w-100 object-fit-contain"
+        [src]="layoutReportModel&&layoutReportModel.clientLogo?prefix + layoutReportModel.clientLogo:'//:0'"
+        onerror="this.style.display='none'" alt="clientLogo" />
+    </div>
+  </div>
+
+  <div class="content container-content-preview" [ngSwitch]="layout4">
+    <directive-previewer-skyline *ngSwitchCase="reportTypesStandard.skyline" [data2Drawing]="data4Content"
+      [isPdfShow]="isPdfShow">
+    </directive-previewer-skyline>
+    <directive-previewer-system *ngSwitchCase="reportTypesStandard.system" [data2Drawing]="data4Content"
+      [isPdfShow]="isPdfShow">
+    </directive-previewer-system>
+    <directive-previewer-subsystem *ngSwitchCase="reportTypesStandard.subSystem" [data2Drawing]="data4Content"
+      [isPdfShow]="isPdfShow">
+    </directive-previewer-subsystem>
+    <directive-previewer-itr *ngSwitchCase="reportTypesStandard.itr" [data2Drawing]="data4Content"
+      [isPdfShow]="isPdfShow">
+    </directive-previewer-itr>
+    <directive-previewer-punch *ngSwitchCase="reportTypesStandard.punchSummary" [data2Drawing]="data4Content"
+      [isPdfShow]="isPdfShow">
+    </directive-previewer-punch>
+  </div>
+
+  <div class="footer">
+    <!-- <div *ngIf="layoutReportModel&&layoutReportModel.isTitleCriteria" class="title">
+      <div><u>Legend</u></div>
+      <div class="progress-text">In Progress</div>
+      <div class="completed-text">Complete</div>
+      <div class="overdue-text">Overdue</div>
+    </div> -->
+    <div class="col text-always-middle d-block">
+      {{layoutReportModel&&layoutReportModel.filter? filterCPrefix[layout4] + layoutReportModel.filter :
+      filterCDefaults[layout4]}}
+    </div>
+    <!-- <div class="text-always-middle logo-eai p-2">
+      <img class="h-100 w-100"
+        [src]="layoutReportModel&&layoutReportModel.eaiLogo?prefix + layoutReportModel.eaiLogo:'//:0'"
+        onerror="this.style.display='none'" alt="eaiLogo" />
+    </div> -->
+    <div class="col d-flex align-items-end justify-content-end">
+      Copyright <span>&#169;</span> E-AI 2021
+    </div>
+  </div>
+</div>

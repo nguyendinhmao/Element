@@ -1,0 +1,46 @@
+<div *ngIf="visible" class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content has-shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Edit Work Pack</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (ngSubmit)="onSaveData(f)" #f="ngForm" novalidate>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Work Pack No.:</label>
+            <input type="text" class="form-control" name="workpackNo" #workpackNo="ngModel"
+              [(ngModel)]="updationModel.workPackNo" required autocomplete="off">
+            <div *ngIf="workpackNo.invalid && (workpackNo.dirty || workpackNo.touched || f.submitted)" class="error">
+              <div *ngIf="workpackNo.errors?.required">This field is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Discipline Code:</label>
+            <input type="text" class="form-control" name="disciplineCode" #disciplineCode="ngModel"
+              [(ngModel)]="updationModel.disciplineCode" required autocomplete="off" disabled>
+            <div *ngIf="disciplineCode.invalid && (disciplineCode.dirty || disciplineCode.touched || f.submitted)"
+              class="error">
+              <div *ngIf="disciplineCode.errors?.required">This field is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="3" name="workPackName" #workPackName="ngModel"
+              [(ngModel)]="updationModel.workPackName" required></textarea>
+            <div *ngIf="workPackName.invalid && (workPackName.dirty || workPackName.touched || f.submitted)"
+              class="error">
+              <div *ngIf="workPackName.errors?.required">This field is required</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onCancel()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="box-body">
+    <div class="table-options mb-3">
+        <button mat-raised-button color="primary" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+            data-target="#addNewModal" (click)="onOpenAddModal()">
+            <i class="fas fa-plus mb-1 mr-1"></i>Add role
+        </button>
+    </div>
+
+    <div class="table-container table-responsive">
+        <table mat-table [dataSource]="dataSource" matSort class="table table-striped table-bordered table-hover"
+            *ngIf="projectRoleModels.length !== 0" matSortActive="roleName" matSortDirection="asc" matSortDisableClear (matSortChange)="onSortData($event)">
+
+            <ng-container matColumnDef="roleName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Role Name</th>
+                <td mat-cell *matCellDef="let element">{{element.roleName}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+                <td mat-cell *matCellDef="let element">{{element.code}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Delete</th>
+                <td mat-cell *matCellDef="let element" class="text-center">
+                    <a class="btn-delete" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+                        data-target="#confirmModal" (click)="onOpenDeleteModal(element.id)">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[50, 100, 200]" [pageSize]="50" *ngIf="projectRoleModels.length !== 0"
+            (page)="onGetProjectRoleData($event.pageIndex)" [length]="projectRolesCount"></mat-paginator>
+
+        <!-- Datatable empty -->
+        <table class="table table-bordered table-hover" role="grid" *ngIf="projectRoleModels.length === 0">
+            <thead role="rowgroup">
+                <tr class="mat-header-row" role="row">
+                    <th class="mat-header-cell" role="columnheader">Role Name</th>
+                    <th class="mat-header-cell" role="columnheader">Code</th>
+                    <th class="mat-header-cell text-center" role="columnheader">Delete</th>
+                </tr>
+            </thead>
+            <tbody role="rowgroup">
+                <tr class="mat-row" role="row">
+                    <td class="text-center" colspan="4">
+                        There is no item!
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<add-project-role *ngIf="isAddNewState" [visible]="isAddNewState" [projectId]="projectId"
+    (onSuccess)="onSuccessAddModal($event)">
+</add-project-role>
+
+<confirm-modal *ngIf="isDeleteState" [visible]="isDeleteState" (confirm)="onDeleteConfirm($event)" [header]="'Confirm'"
+    [content]="'Are you sure want to delete?'"></confirm-modal>

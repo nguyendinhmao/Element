@@ -1,0 +1,109 @@
+<div *ngIf="visible" class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content has-shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Add Milestone</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form (ngSubmit)="onSaveData(f)" #f="ngForm" novalidate>
+        <div class="modal-body">
+          <!-- <div class="form-group">
+            <label>Project</label>
+            <input type="text" class="form-control" name="projectKey" #projectKey="ngModel"
+              [(ngModel)]="creationModel.projectKey" required autocomplete="off" disabled>
+            <div *ngIf="projectKey.invalid && (projectKey.dirty || projectKey.touched || f.submitted)" class="error">
+              <div *ngIf="projectKey.errors?.required">This field is required</div>
+            </div>
+          </div> -->
+
+          <div class="form-group">
+            <label>Milestone Name <span class="required"></span></label>
+            <input type="text" class="form-control" name="milestoneName" #milestoneName="ngModel"
+              [(ngModel)]="creationModel.milestoneName" required autocomplete="off">
+            <div *ngIf="milestoneName.invalid && (milestoneName.dirty || milestoneName.touched || f.submitted)"
+              class="error">
+              <div *ngIf="milestoneName.errors?.required">This field is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Description <span class="required"></span></label>
+            <textarea class="form-control" rows="3" name="description" #description="ngModel"
+              [(ngModel)]="creationModel.description" required></textarea>
+            <div *ngIf="description.invalid && (description.dirty || description.touched || f.submitted)" class="error">
+              <div *ngIf="description.errors?.required">This field is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Phase <span class="required"></span></label>
+            <input type="text" class="form-control" name="phase" #phase="ngModel" [(ngModel)]="creationModel.phase"
+              required autocomplete="off">
+            <div *ngIf="phase.invalid && (phase.dirty || phase.touched || f.submitted)" class="error">
+              <div *ngIf="phase.errors?.required">This field is required</div>
+            </div>
+          </div>
+
+          <div class="form-group mat-calendar-custom">
+            <label>Date Start Planned</label>
+            <div>
+              <mat-form-field class="mt-0 w-100">
+                <input matInput [matDatepicker]="dtsPlanned" name="dateStartPlanned" #dateStartPlanned="ngModel"
+                  [(ngModel)]="creationModel.dateStartPlanned" (focus)="dtsPlanned.open()">
+                <mat-datepicker-toggle matSuffix [for]="dtsPlanned"></mat-datepicker-toggle>
+                <mat-datepicker #dtsPlanned></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="form-group mat-calendar-custom">
+            <label>Date End Planned</label>
+            <div>
+              <mat-form-field class="mt-0 w-100">
+                <input matInput [matDatepicker]="dtePlanned" name="dateEndPlanned" #dateEndPlanned="ngModel"
+                  [(ngModel)]="creationModel.dateEndPlanned" (focus)="dtePlanned.open()">
+                <mat-datepicker-toggle matSuffix [for]="dtePlanned"></mat-datepicker-toggle>
+                <mat-datepicker #dtePlanned></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+
+          <div class="form-group mat-calendar-custom">
+            <label>Date Start Actual</label>
+            <div>
+              <mat-form-field class="mt-0 w-100">
+                <input matInput [matDatepicker]="dtsActual" name="dateStartActual" #dateStartActual="ngModel"
+                  [(ngModel)]="creationModel.dateStartActual" (focus)="dtsActual.open()">
+                <mat-datepicker-toggle matSuffix [for]="dtsActual"></mat-datepicker-toggle>
+                <mat-datepicker #dtsActual></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="form-group mat-calendar-custom">
+            <label>Date End Actual</label>
+            <div>
+              <mat-form-field class="mt-0 w-100">
+                <input matInput [matDatepicker]="dteActual" name="dateEndActual" #dateEndActual="ngModel"
+                  [(ngModel)]="creationModel.dateEndActual" (focus)="dteActual.open()">
+                <mat-datepicker-toggle matSuffix [for]="dteActual"></mat-datepicker-toggle>
+                <mat-datepicker #dteActual></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onCancel()">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

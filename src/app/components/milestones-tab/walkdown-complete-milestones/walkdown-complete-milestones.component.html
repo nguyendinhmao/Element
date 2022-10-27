@@ -1,0 +1,81 @@
+<div class="modal-dialog-centered modal-dialog-scrollable m-0" role="document">
+  <div class="modal-content has-shadow">
+    <div class="modal-header">
+      <h5 class="modal-title">Walkdown Status</h5>
+      <button type="button" class="close" aria-label="Close" mat-dialog-close>
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div mat-dialog-content class="modal-body m-0 pt-2 pl-3 pr-3 pb-0">
+      <h6>List Allocated Punch:</h6>
+      <ul class="list-group mb-3" *ngIf="handoverLookUpModels && handoverLookUpModels.length > 0">
+        <li class="list-group-item" *ngFor="let item of handoverLookUpModels">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="col p-0 mr-2 text-truncate" matTooltip="{{item.description}}" matTooltipPosition="below">
+              <span>{{item.name}}</span>
+              <span *ngIf="item.description"> - {{item.description}}</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <span class="badge p-2" [ngClass]="{
+                'badge-success':item.status=='Completed'||item.status=='Done', 
+                'badge-info': item.status=='Approved',
+                'badge-warning': item.status=='Waiting' || item.status=='Submitted' || item.status=='Rejected',
+                'badge-danger':item.status=='Deleted',
+                'badge-primary':item.status=='Inprogress',
+                'badge-secondary':item.status=='Draft' || item.status=='Closed' || item.status=='NotStarted'}">
+                {{item.status}}
+              </span>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <h6 *ngIf="handoverLookUpModels && handoverLookUpModels.length <= 0" class="mb-3 text-danger font-weight-normal">
+        There is no item!
+      </h6>
+
+      <h6 *ngIf="walkDownCompleteModel && walkDownCompleteModel.walkDownStatus === walkdownStatusEnum.Inprogress">
+        Signatures:</h6>
+      <ng-container
+        *ngIf="walkDownCompleteModel && walkDownCompleteModel.walkDownStatus === walkdownStatusEnum.Inprogress">
+        <div class="d-flex flex-wrap" *ngFor="let item of walkDownCompleteModel.walkDownSignatures; let i = index"
+          [ngClass]="{'mb-3': i < walkDownCompleteModel.walkDownSignatures.length - 1}">
+          <div class="col-12 p-0">
+            <hr class="mt-0 mb-3" />
+          </div>
+          <div class="col-4 p-0">
+            <span>{{item.description}}:</span>
+          </div>
+          <div class="col-6">
+            <span>{{item.signedName}}</span>
+          </div>
+          <div class="d-flex justify-content-end col-2 p-0">
+            <span>{{item.signDate | date: 'dd/MM/yyyy'}}</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <div class="d-flex w-100 align-items-center justify-content-between">
+        <div>
+          <span
+            *ngIf="!isEnableStartWalkdown&&isShowAnotherSign&&walkDownCompleteModel.walkDownStatus !== walkdownStatusEnum.Completed"
+            class="link-another-sign" data-toggle="modal" data-backdrop="static" data-keyboard="false"
+            data-target="#confirmPinCodeModal" (click)="onLoginConfirm()">Sign as
+            different user</span>
+        </div>
+        <div class="d-flex">
+          <button mat-raised-button color="primary" *ngIf="isEnableStartWalkdown"
+            (click)="startWalkDownHandover()">Start
+            Walkdown</button>
+          <button mat-raised-button color="success" *ngIf="isEnableSignOff" class="ml-2" data-toggle="modal"
+            data-backdrop="static" data-keyboard="false" data-target="#confirmPinCodeModal"
+            (click)="signOffWalkDownHandover()">Sign-off</button>
+          <button mat-raised-button color="info" class="ml-2" (click)="onShowAddPunch()"
+            *ngIf="walkDownCompleteModel.walkDownStatus === walkdownStatusEnum.NotStarted">Add
+            Punch</button>
+          <a mat-raised-button mat-dialog-close class="ml-2">Cancel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

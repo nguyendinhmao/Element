@@ -1,0 +1,111 @@
+$widthCommon: 200px;
+$heightHeaderContent: 102px;
+$width4Ceil: 120px;
+$height4Ceil: 70px;
+
+$colorProgress: #99700a;
+$colorCompleted: #0e6829;
+$colorOverdue: #a10d00;
+$bgProgress: rgba(253, 197, 28, 0.4);
+$bgCompleted: rgba(44, 185, 9, 0.4);
+$bgOverdue: rgba(232, 56, 56, 0.4);
+
+.progress-text {
+  color: $colorProgress;
+  background-color: $bgProgress;
+}
+
+.completed-text {
+  color: $colorCompleted;
+  background-color: $bgCompleted;
+}
+
+.overdue-text {
+  color: $colorOverdue;
+  background-color: $bgOverdue;
+}
+
+.preview-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100% !important;
+  width: 100% !important;
+  font-weight: 600;
+
+  .text-always-middle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .header {
+    min-height: 120px;
+    max-height: 130px;
+    display: flex;
+
+    & > div {
+      text-align: center;
+      border: 1px black solid;
+
+      &:first-child {
+        border-right: none;
+        width: $widthCommon;
+      }
+
+      &:last-child {
+        border-left: none;
+        width: $widthCommon;
+      }
+    }
+
+    .header-title {
+      h1 {
+        margin-bottom: 0;
+        margin-left: 10px;
+        font-size: 36px;
+      }
+
+      .eai-logo {
+        width: 65px;
+      }
+    }
+  }
+
+  .footer {
+    display: flex;
+    max-height: 130px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+
+    & > div {
+      // text-align: center;
+      // border: 1px black solid;
+      font-size: 15px;
+
+      &.title {
+        display: flex;
+        flex-direction: column;
+        width: $widthCommon;
+        border-right: none;
+
+        & > div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 2rem;
+          border-bottom: 1px black solid;
+
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+
+      &.logo-eai {
+        width: $widthCommon;
+        border-right: none;
+        border-left: none;
+      }
+    }
+  }
+}

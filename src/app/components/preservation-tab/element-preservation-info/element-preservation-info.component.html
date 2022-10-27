@@ -1,0 +1,94 @@
+<div *ngIf="visible" class="modal fade" id="elementPreservationInfoModal" tabindex="-1" role="dialog"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content has-shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Preservation Element Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Element No. <span class="required"></span></label>
+          <input type="text" class="form-control" name="elementNo" [(ngModel)]="elementInfo.elementNo"
+            autocomplete="off" disabled>
+        </div>
+
+        <div class="form-group">
+          <label>Task <span class="required"></span></label>
+          <input type="text" class="form-control" name="task" [(ngModel)]="elementInfo.task" required autocomplete="off"
+            disabled>
+        </div>
+
+        <div class="form-group">
+          <label>Description <span class="required"></span></label>
+          <textarea class="form-control" rows="3" name="description" #description="ngModel"
+            [(ngModel)]="elementInfo.description" disabled></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Type <span class="required"></span></label>
+          <input type="text" class="form-control" name="type" [(ngModel)]="elementInfo.type" autocomplete="off"
+            disabled>
+        </div>
+
+        <div class="form-group" *ngIf="elementInfo.type == 'Periodic'">
+          <label>Frequency In Weeks <span class="required"></span></label>
+          <input type="text" class="form-control" name="frequencyInWeeks" [(ngModel)]="elementInfo.frequencyInWeeks"
+            autocomplete="off" disabled>
+        </div>
+
+        <div class="form-group">
+          <label>Comments<span class="required"></span></label>
+          <div class="comment-area">
+            <div *ngIf="!commentModels || commentModels.length < 1"
+              class="d-flex align-items-center justify-content-center" style="height: 36px;">
+              <span class="font-weight-light">No comment has been added</span>
+            </div>
+            <div *ngIf="commentModels && commentModels.length > 0">
+              <div *ngFor="let comment of commentModels;index as i" class="mb-3">
+                <div class="d-flex align-items-start">
+                  <i class="fas fa-user p-2"></i>
+                  <div class="w-100 pt-1">
+                    <div class="d-flex pb-2">
+                      <span class="font-weight-bold pr-2">{{comment.user}}</span>
+                      ( <span class="font-weight-light">{{createDate(comment.createdDate)}}</span> ):
+                    </div>
+                    <div class="comment-content mb-2">
+                      <span>{{comment.content}}</span>
+                    </div>
+                    <button *ngIf="comment.canDelete" class="delete-wrapper" type="button" data-toggle="modal"
+                      data-backdrop="static" data-keyboard="false" data-target="#confirmModal"
+                      (click)="openRemoveCommentModal(comment.id)"><span class="delete">Delete</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isAddComment" class="form-group">
+          <button mat-stroked-button class="w-100 text-left" (click)="isAddComment=!isAddComment">Add a
+            comment...</button>
+        </div>
+
+        <div *ngIf="isAddComment" class="form-group">
+          <textarea class="form-control mb-2" rows="3" name="addComment" placeholder="Add a comment..."
+            [(ngModel)]="newComment" autocomplete="off" autofocus></textarea>
+          <button mat-raised-button color="primary" type="button" class="mr-2" (click)="addComment()"
+            [disabled]="!newComment">Add</button>
+          <button mat-raised-button type="button" class="mr-2" (click)="isAddComment=!isAddComment">Cancel</button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button mat-raised-button type="button" data-dismiss="modal" (click)="onCancel()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<confirm-modal *ngIf="isShowRemoveCommentModal" [visible]="isShowRemoveCommentModal" (confirm)="removeComment($event)"
+  [header]="'Confirm'" [content]="'Are you sure want to delete?'"></confirm-modal>
